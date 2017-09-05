@@ -1,0 +1,5 @@
+SymptomIntent {Symptom}
+SymptomIntent i have {Symptom}
+SymptomIntent i am feeling {Symptom}
+SymptomIntent i am having {Symptom} symptom
+AMAZON.HelpIntent tell me how to use it
