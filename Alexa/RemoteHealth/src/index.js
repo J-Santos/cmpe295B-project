@@ -1,20 +1,31 @@
 'use strict';
+
+var Messages = require('./messages');
+var Handlers = require('./handlers')
+
 var Alexa = require("alexa-sdk");
+var APP_ID = "amzn1.ask.skill.6cf7d5fd-a5b5-4ff7-bbbd-0d4d6c7a8005";
 
 exports.handler = function(event, context, callback) {
     var alexa = Alexa.handler(event, context);
-    alexa.registerHandlers(handlers);
+    alexa.appId = undefined;//APP_ID;
+    alexa.registerHandlers(Handlers);
     alexa.execute();
 };
 
-var handlers = {
-    'LaunchRequest': function () {
-        this.emit('SayHello');
-    },
-    'HelloWorldIntent': function () {
-        this.emit('SayHello')
-    },
-    'SayHello': function () {
-        this.emit(':tell', 'Hello World!');
-    }
-};
+// var speechOutput = 'Hello world!';
+// var repromptSpeech = 'Hello again!';
+
+// var handlers = {
+//     'LaunchRequest': function () {
+//         this.emit('WelcomeIntent');
+//     },
+//     'WelcomeIntent': function () {
+//         var speechOutput = Messages.WELCOME + " " + Messages.HELP;
+//         var repromptSpeech =  Messages.HELP;
+//         this.emit(':ask', speechOutput, repromptSpeech);
+//     },
+//     'SymptomIntent': function () {
+//         this.emit(':ask', speechOutput, repromptSpeech);
+//     }
+// };
