@@ -2,3 +2,7 @@ SymptomIntent i have {Symptom}
 SymptomIntent i am feeling {Symptom}
 SymptomIntent i am having {Symptom} symptom
 AMAZON.HelpIntent tell me how to use it
+AMAZON.StopIntent close remote health
+AMAZON.StopIntent exit remote health
+AMAZON.StopIntent finish remote health
+AMAZON.StopIntent end remote health session
