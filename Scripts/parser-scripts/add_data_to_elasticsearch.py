@@ -8,7 +8,7 @@ INDEX = "diseases"
 TYPE = "api"
 HEADERS = {'content-type': 'application/json'}
 
-with open('../data/diseases_symptoms.json', 'r') as f:
+with open('../data/diseases_symptoms_new.json', 'r') as f:
      data = json.load(f)
 
 for x in data["diseases"]:
