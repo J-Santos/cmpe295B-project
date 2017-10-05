@@ -1,0 +1,28 @@
+{
+  "name": "users-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/J-Santos/users-api.git"
+  },
+  "author": "Jelson Santos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/J-Santos/users-api/issues"
+  },
+  "homepage": "https://github.com/J-Santos/users-api#readme",
+  "dependencies": {
+    "ajax-request": "^1.2.3",
+    "body-parser": "^1.17.1",
+    "elasticsearch": "^13.3.1",
+    "express": "^4.15.2",
+    "mongoose": "^4.9.1",
+    "natural": "^0.5.4",
+    "request": "^2.83.0"
+  }
+}
