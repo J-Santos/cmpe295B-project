@@ -2,8 +2,10 @@
 
 var Messages = require('./messages');
 var Alexa = require("alexa-sdk");
+var request = require("request");
 var Requests = require('./requests');
 
+var GOOGLE_USER_INFO = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=";
 // var launchRequestHandler = function () {
 //     this.emit(welcomeIntentHandler);
 // };
@@ -14,6 +16,7 @@ var STATES = {
 };
 
 var newSessionHandler =  function(){
+	console.log("NEWSESSION HANDLER");
 	this.handler.state = STATES.INSESSION;
 	var speechOutput = Messages.WELCOME + " " + Messages.HELP;
     var repromptSpeech =  Messages.HELP;
@@ -23,10 +26,60 @@ var newSessionHandler =  function(){
 
 var launchRequestHandler = function () {
 	console.log("LAUNCH_REQUEST");
-	this.attributes['session_symptoms'] = []
-    var speechOutput = Messages.WELCOME + " " + Messages.HELP;
-    var repromptSpeech =  Messages.HELP;
-    this.emit(':ask', speechOutput, repromptSpeech);
+	var accessToken = this.event.session.user.accessToken;
+	console.log("ACCESS_TOKEN: "+ accessToken);
+	var url = GOOGLE_USER_INFO + accessToken;
+	// var test = this;
+	// request.get(url, function(error, response, body) {
+ //        var d = JSON.parse(body);
+ //        console.log("REQUEST BODY: " + body);
+ //        console.log("REQUEST RESPONSE: " + response);
+ //        console.log("REQUEST ERROR: " + error);
+        
+ //        test.attributes['session_symptoms'] = []
+	//     var speechOutput = Messages.WELCOME + " " + Messages.HELP;
+	//     var repromptSpeech =  Messages.HELP;
+	//     test.emit(':ask', speechOutput, repromptSpeech);
+ //        // if (result.length > 0) {
+ //        //     callback(result[0].book_details[0].title)
+ //        // } else {
+ //        //     callback("ERROR")
+ //        // }
+ //    });
+
+ 	var thisSession = this;
+ 	if(accessToken === null || accessToken === undefined) { 
+       	this.emit(':tellWithLinkAccountCard', Messages.LINK_ACCOUNT);
+    } else { 
+   	    request(url, function(error, response, body) {
+			if(error){
+				return console.log('Error:', error);
+			}
+			if (response.statusCode == 200) {
+				console.log("body=", body);
+				var profile = JSON.parse(body);
+				//speechOutput += 'Hello ' + profile.name.split(" ")[0];
+				//thisSession.event.session.user['userEmail'] = profile.email;
+				thisSession.attributes['user_email'] = profile.email;
+				thisSession.attributes['session_symptoms'] = [];
+			    var speechOutput = Messages.WELCOME + " " + Messages.HELP;
+			    var repromptSpeech =  Messages.HELP;
+			    thisSession.emit(':ask', speechOutput, repromptSpeech);
+			} else {
+				//speechOutput += 'I was unable to get your profile info from Amazon.';
+				thisSession.emit(":tell", Messages.ERROR);
+			}
+	   	});
+        //speechOutput += 'What can I do for you?';
+        //var reprompt = textHelper.helpText + ' What can I do for you?';
+        //response.ask(speechOutput, reprompt);
+    }
+
+
+    // this.attributes['session_symptoms'] = []
+    // var speechOutput = Messages.WELCOME + " " + Messages.HELP;
+    // var repromptSpeech =  Messages.HELP;
+    // this.emit(':ask', speechOutput, repromptSpeech);
 };
 
 var symptomIntentHandler = function () {
@@ -98,6 +151,6 @@ handlers['AMAZON.YesIntent'] = yesIntentHandler;
 
 //handlers['CopyIntent'] = copyIntentHandler;
 
-var sessionHandlers = Alexa.CreateStateHandler(STATES.INSESSION, handlers);
+var sessionHandlers = Alexa.CreateStateHandler(STATES.INSESSION, newSessionHandlers);
 
-module.exports = {sessionHandlers, newSessionHandlers};
+module.exports = {sessionHandlers, handlers};
