@@ -3,29 +3,27 @@ var apptSchema = require('./appointment');
 var Appointment = apptSchema.Appointment;
 var addressSchema = require('./address');
 var Address = addressSchema.Address;
+var familyMedicalHistorySchema = require('./familyMedicalHistory');
+var FamilyMedicalHistory = familyMedicalHistorySchema.FamilyMedicalHistory;
+var personalMedicalHistorySchema = require('./personalMedicalHistory');
+var PersonalMedicalHistory = personalMedicalHistorySchema.PersonalMedicalHistory;
 
 var userSchema  = new mongoose.Schema({
-    "email" : {type: String},
-    "password" : {type: String},
-    "user_type": {type: String},
-    "patient_id": {type: String},
-    "family_patient_id": {type: String},
-    "doctor_id": {type: String},
+    "_id" : {type: String},
     "name": {
     	"first_name": {type: String},
     	"last_name": {type: String},
     },
-    "phone_number": {type: String},
     "address": {type: mongoose.Schema.Types, ref: 'Address'},
+    "phone_number": {type: String, validate: {validator: function(v) {return /\d{3}-\d{3}-\d{4}/.test(v);},message: '{VALUE} is not a valid phone number!'}},
+    "user_type": {type: String},
+    "doctor_id": {type: String},
     "medical_record":{
-    	"patient_id": {type: String},
-    	"gender": {type: String},
-    	"age": {type: Number},
-    	"weight": {type: Number},
-    	"past_diagnosis": [String],
-    	"current_diagnosis": [String],
-    	"family_history": [String],
-    	"prescriptions": [String],
+        "ethnicity": {type: String},
+        "gender": {type: String},
+        "age": {type: Number},
+    	"family_medical_history": {type: mongoose.Schema.Types, ref: 'FamilyMedicalHistory'},
+        "personal_medical_history": {type: mongoose.Schema.Types, ref: 'personalMedicalHistory'}
     },
     "upcoming_appts": [{type: mongoose.Schema.Types.ObjectId, ref: 'Appointment'}],
     "patients": [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]

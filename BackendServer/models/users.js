@@ -3,7 +3,7 @@ var User = userModel.User;
 
 exports.createUser = function (req,callback){
 	var new_user = new User(req.body);
-	User.findOne({email:req.body.email},function(err,user){	
+	User.findOne({"_id":req.body._id},function(err,user){	
 		//console.log(user);
 		if(err){
 			return callback(err,null);
@@ -20,7 +20,7 @@ exports.createUser = function (req,callback){
 
 exports.getUser = function (req, callback){
 	//console.log("User id: ",req.params.user_id);
-	User.findOne({'email': req.params.user_id}).exec(function(err, user) {
+	User.findOne({'_id': req.params.user_id}).exec(function(err, user) {
         callback(err,user);
     });
 }
@@ -36,7 +36,7 @@ exports.updateUser = function (query, conditions, callback){
 		}
 		
 		for (var key in conditions){
-			if(key == 'email'){
+			if(key == '_id'){
 				return callback(new Error('Email is unique and cannot be modified'), null)
 			}
 			user[key] = conditions[key];
@@ -52,8 +52,8 @@ exports.getUsers = function (query,callback){
 }
 
 exports.deleteUser = function (req,callback){
-	User.remove({email : req.params.user_id}, function(err) {
-            callback(err);
+	User.remove({"_id" : req.params.user_id}, function(err) {
+        callback(err);
     });
 }
 

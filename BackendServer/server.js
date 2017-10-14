@@ -9,6 +9,7 @@ var router              =   express.Router();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended" : true}));
+app.set('json spaces', 3);
 
 router.get("/",function(req,res){
     res.json({"error" : false,"message" : "Hello World"});
@@ -92,7 +93,7 @@ router.route("/api/users/:user_id")
     })
 
     .put(function(req, res) {
-        usersModel.updateUser({email:req.params.user_id},req.body,function(err,user){
+        usersModel.updateUser({"_id":req.params.user_id},req.body,function(err,user){
             //console.log("Err: "+JSON.stringify(err, ["message", "arguments", "type", "name"]));
             if (err){
                 res.status(500).send(err.message);
