@@ -18,9 +18,9 @@ exports.createUser = function (req,callback){
 	});
 }
 
-exports.getUser = function (req, callback){
+exports.getUser = function (query, callback){
 	//console.log("User id: ",req.params.user_id);
-	User.findOne({'_id': req.params.user_id}).exec(function(err, user) {
+	User.findOne(query).exec(function(err, user) {
         callback(err,user);
     });
 }
@@ -34,7 +34,6 @@ exports.updateUser = function (query, conditions, callback){
 		else if(user == null){
 			return callback(new Error("User not found"),null );
 		}
-		
 		for (var key in conditions){
 			if(key == '_id'){
 				return callback(new Error('Email is unique and cannot be modified'), null)
@@ -62,6 +61,7 @@ exports.getUserPatients = function (req,callback){
 		callback(err,users)
 	});	
 }
+
 // exports.getUsers = function (req,callback){
 // 	mongoOp.find({},function(err,data){
 //         // Mongo command to fetch all data from collection.

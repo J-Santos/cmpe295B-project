@@ -3,6 +3,8 @@ var apptSchema = require('./appointment');
 var Appointment = apptSchema.Appointment;
 var addressSchema = require('./address');
 var Address = addressSchema.Address;
+var googleTokenSchema = require('../schemas/googleToken');
+var GoogleToken = googleTokenSchema.GoogleToken;
 var familyMedicalHistorySchema = require('./familyMedicalHistory');
 var FamilyMedicalHistory = familyMedicalHistorySchema.FamilyMedicalHistory;
 var personalMedicalHistorySchema = require('./personalMedicalHistory');
@@ -25,8 +27,11 @@ var userSchema  = new mongoose.Schema({
     	"family_medical_history": {type: mongoose.Schema.Types, ref: 'FamilyMedicalHistory'},
         "personal_medical_history": {type: mongoose.Schema.Types, ref: 'personalMedicalHistory'}
     },
-    "upcoming_appts": [{type: mongoose.Schema.Types.ObjectId, ref: 'Appointment'}],
-    "patients": [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
+    "google_calendar_token": {type: mongoose.Schema.Types, ref: 'GoogleToken'},
+    //"upcoming_appointments": [{type: mongoose.Schema.Types.ObjectId, ref: 'Appointment'}],
+    //"pending_appointments": [{type: mongoose.Schema.Types.ObjectId, ref: 'Appointment'}],
+    //"past_appointments": [{type: mongoose.Schema.Types.ObjectId, ref: 'Appointment'}],
+    //"patients": [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
 });
-// create model if not exists.
+
 exports.User = mongoose.model('User', userSchema);

@@ -24,6 +24,9 @@
     "body-parser": "^1.17.1",
     "elasticsearch": "^13.3.1",
     "express": "^4.15.2",
+    "express-session": "^1.15.6",
+    "google-auth-library": "^0.11.0",
+    "googleapis": "^22.2.0",
     "mongoose": "^4.9.1",
     "natural": "^0.5.4",
     "request": "^2.83.0"

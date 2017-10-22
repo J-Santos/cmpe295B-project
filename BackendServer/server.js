@@ -1,19 +1,95 @@
 var express             =   require("express");
-var app                 =   express();
+var ExpressSession      =   require('express-session');
+var googleAPI           =   require('googleapis');
+// var googleAuth          =   require('google-auth-library');
 var bodyParser          =   require("body-parser");
+
+var app                 =   express();
 var usersModel          =   require("./models/users");
 var predictionModel     =   require("./models/prediction");
 var appointmentsModel   =   require("./models/appointments");
 var diseasesModel       =   require("./models/diseases");
+var googleCalendarModel =   require("./models/googleCalendar");
 var router              =   express.Router();
+var googlePlus          =   googleAPI.plus('v1');
+
+// var AUTH                =   new googleAuth();
+
+// const GOOBLE_CLIENT_ID      =   "358070701669-5dbjhb636kcai0d05t811pmhiee4rqs2.apps.googleusercontent.com";
+// const GOOGLE_CLIENT_SECRET  =   "3V7s3kjbdHalNkUFabMOG_9M";
+// const AUTH_REDIRECTION_URL  =   "http://localhost:5000/oauthCallback";
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended" : true}));
 app.set('json spaces', 3);
+app.use(ExpressSession({
+    secret: 'calendar-secret-19890913007',
+    resave: true,
+    saveUninitialized: true
+}));
+
+
 
 router.get("/",function(req,res){
     res.json({"error" : false,"message" : "Hello World"});
 });
+
+////////////////////////////////////////////////////////////////
+/// Authentication
+////////////////////////////////////////////////////////////////
+
+router.route("/authenticate")
+    .get(function(req,res){
+        googleCalendarModel.getAuthUrl(req,function(url, err){
+            if (err){
+                //console.log('before 500');
+                res.status(500).send(err.message);
+            }
+            // else if(users == undefined || users == null ){
+            //     res.status(404).json({ message: 'User not found' })
+            // }
+            else{
+                res.send(`
+                    <h1>Authentication using google oAuth<h1>
+                    <a href=${url}>Login</a>
+                `)
+            }
+        });
+        // var url = googleCalendarModel.getAuthUrl();
+        // console.log(url);
+        // res.send(`
+        //     <h1>Authentication using google oAuth<h1>
+        //     <a href=${url}>Login</a>
+        // `)
+});
+
+router.route("/authenticate/oauthCallback")
+    .get(function(req,res){
+        googleCalendarModel.handleOauthCallback(req,function(err, user){
+            if (err){
+                //console.log('before 500');
+                //res.status(500).send(err.message);
+                res.send(`<h3>Login failed!!</h3>;`);
+            }
+            // else if(users == undefined || users == null ){
+            //     res.status(404).json({ message: 'User not found' })
+            // }
+            else{
+                res.send('<h1>auth successful</h1>');
+            }
+        });
+        // var url = googleCalendarModel.getAuthUrl();
+        // console.log(url);
+        // res.send(`
+        //     <h1>Authentication using google oAuth<h1>
+        //     <a href=${url}>Login</a>
+        // `)
+});
+
+////////////////////////////////////////////////////////////////
+/// Prediction
+////////////////////////////////////////////////////////////////
 
 router.route("/api/prediction")
     .get(function(req,res){
@@ -30,6 +106,10 @@ router.route("/api/prediction")
             }
         });
     });
+
+////////////////////////////////////////////////////////////////
+/// Users
+////////////////////////////////////////////////////////////////
 
 router.route("/api/users")
     .get(function(req,res){
@@ -78,13 +158,13 @@ router.route("/api/users")
 
 router.route("/api/users/:user_id")
     .get(function(req,res){
-        usersModel.getUser(req,function(err,user){
+        usersModel.getUser({'_id': req.params.user_id},function(err,user){
             //console.log(user);
             if (err){
                 res.status(500).send(err.message);
             }
             else if(user == undefined || user == null || user == []){
-                res.status(404).json({ message: 'User not found' })
+                res.status(404).json({ message: 'User not found' });
             }
             else{
                 res.status(200).json(user);
@@ -115,6 +195,129 @@ router.route("/api/users/:user_id")
                 res.status(200).json({ message: 'User deleted' });
         });
     });
+
+////////////////////////////////////////////////////////////////
+/// Appointments
+////////////////////////////////////////////////////////////////
+
+router.route("/api/appointments")
+    .post(function(req,res){
+        appointmentsModel.addAppointment(req,function(err,user){
+            if (err){
+                res.status(500).send(err.message);
+            }
+            // else if(user == undefined || user == null  ){
+            //     res.status(404).json({ message: 'User not found' });
+            // }
+            else{
+                res.status(201).json({ message: 'Appointment added!' });
+            }
+        });
+    })
+    .get(function(req,res){
+        appointmentsModel.getAppointments({},function(err,appointments){
+            //console.log(user);
+            if (err){
+                res.status(500).send(err.message);
+            }
+            else if(appointments == undefined || appointments == null || appointments == []){
+                res.status(404).json({ message: 'Appointments not found' })
+            }
+            else{
+                res.status(200).json(appointments);
+            }
+        });
+    });
+
+router.route("/api/appointments/:appointment_id")
+    .get(function(req,res){
+        appointmentsModel.getAppointment({_id : req.params.appointment_id},function(err,appointment){
+            if (err){
+                res.status(500).send(err.message);
+            }
+            else if(appointment == undefined || appointment == null || appointment == []){
+                res.status(404).json({ message: 'Appointment not found' })
+            }
+            else{
+                res.status(200).json(appointment);
+            }
+        });
+    })
+
+    .put(function(req, res) {
+        appointmentsModel.updateAppointment({_id : req.params.appointment_id},req.body,function(err,appointment){
+            if (err){
+                res.status(500).send(err.message);
+            }
+            else if(appointment == undefined || appointment == null  ){
+                res.status(404).json({ message: 'Appointment not found' });
+            }
+            else{
+                res.status(204).send();
+            }
+        });
+    })
+
+    .delete(function(req, res) {
+        appointmentsModel.deleteAppointment(req,function(err){
+            if (err)
+                res.status(500).send(err.message);
+            else
+                res.status(200).json({ message: 'Appointment deleted' });
+        });
+    });
+
+router.route("/api/appointments/:appointment_id/:user_id/approve")
+    .put(function(req, res) {
+        googleCalendarModel.approveAppointment({"_id":req.params.appointment_id, "patient_id":req.params.user_id}, function(err,appointment){
+            if (err){
+                res.status(500).send(err.message);
+            }
+            else if(appointment == undefined || appointment == null  ){
+                res.status(404).json({ message: 'Appointment not found' });
+            }
+            else{
+                res.status(204).send();
+            }
+        });
+    });
+
+router.route("/api/appointments/patient/:user_id")
+    .get(function(req,res){
+        appointmentsModel.getAppointmentsByUser({"patient_id" : req.params.user_id},function(err,appointments){
+            if (err){
+                res.status(500).send(err.message);
+            }
+            else if(appointments == undefined || appointments == null || appointments == []){
+                res.status(404).json({ message: 'Appointments not found' })
+            }
+            else{
+                res.status(200).json(appointments);
+            }
+        });
+    });
+
+router.route("/api/appointments/doctor/:user_id")
+    .get(function(req,res){
+        appointmentsModel.getAppointmentsByUser({"doctor_id" : req.params.user_id},function(err,appointments){
+            if (err){
+                res.status(500).send(err.message);
+            }
+            else if(appointments == undefined || appointments == null || appointments == []){
+                res.status(404).json({ message: 'Appointments not found' })
+            }
+            else{
+                res.status(200).json(appointments);
+            }
+        });
+    });
+
+////////////////////////////////////////////////////////////////
+/// 
+////////////////////////////////////////////////////////////////
+
+
+
 
 router.route("/api/users/:user_id/appointments")
     .post(function(req,res){
@@ -275,7 +478,7 @@ console.log("Listening to PORT "+ port);
 var http = require ('http');
 var mongoose    =   require("mongoose");
 //mongoose.connect('mongodb://localhost:27017/users');
-//var connection_uri = 'mongodb://localhost:27017/healthcare-system'
+connection_uri = 'mongodb://localhost:27017/healthcare-system'
 var connection_uri = process.env.MONGODB_URI || 'mongodb://cmpe295a:chandra3295a@ds143330.mlab.com:43330/healthcare-system';
 
 mongoose.connect(connection_uri, function (err, res) {

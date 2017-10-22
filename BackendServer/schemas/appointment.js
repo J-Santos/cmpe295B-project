@@ -1,18 +1,17 @@
 var mongoose    =   require("mongoose");
 
-var addressSchema = require('./address');
-var Address = addressSchema.Address;
-
 var appointmentSchema  = new mongoose.Schema({
 	"patient_id": {type: String},
 	"doctor_id": {type: String},
-	"date": {type: String},
-	"time": {type: String},
-	"location":{
-		"place": {type: String},
-		"phone_number": {type: String},
-		"address": {type: mongoose.Types, ref: 'Address'}
-	}
+	"doctor_name": {type: String},
+	"purpose": {type: String},
+	"status": {type: String},
+	"date": {type: Date},
+	"start_time": {type: Date},
+	"end_time": {type: Date},
+	"location": {type: String},
+	"google_event_link": {type: String},
+	"start_time_timestamp": {type: Number}
 });
 
 exports.Appointment = mongoose.model('Appointment', appointmentSchema);
