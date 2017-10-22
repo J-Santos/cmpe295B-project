@@ -4,8 +4,8 @@ var google 					= 	require('googleapis');
 var calendar 				= 	google.calendar('v3');
 var OAUTH2            		=   google.auth.OAuth2;
 
-const GOOBLE_CLIENT_ID      =   "358070701669-5dbjhb636kcai0d05t811pmhiee4rqs2.apps.googleusercontent.com";
-const GOOGLE_CLIENT_SECRET  =   "3V7s3kjbdHalNkUFabMOG_9M";
+const GOOBLE_CLIENT_ID      =   "310398537432-4ctsbrma6krd85bsgdvbv6h4vttbt9hs.apps.googleusercontent.com";
+const GOOGLE_CLIENT_SECRET  =   "A8s3j6VY8zuQ1atA5-VwgEcL";
 //const AUTH_REDIRECTION_URL  =   "http://localhost:5000/authenticate/oauthCallback";
 const AUTH_REDIRECTION_URL  =   "https://remote-health-api.herokuapp.com/authenticate/oauthCallback";
 
