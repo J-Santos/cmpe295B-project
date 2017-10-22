@@ -478,7 +478,7 @@ console.log("Listening to PORT "+ port);
 var http = require ('http');
 var mongoose    =   require("mongoose");
 //mongoose.connect('mongodb://localhost:27017/users');
-connection_uri = 'mongodb://localhost:27017/healthcare-system'
+//var connection_uri = 'mongodb://localhost:27017/healthcare-system'
 var connection_uri = process.env.MONGODB_URI || 'mongodb://cmpe295a:chandra3295a@ds143330.mlab.com:43330/healthcare-system';
 
 mongoose.connect(connection_uri, function (err, res) {
