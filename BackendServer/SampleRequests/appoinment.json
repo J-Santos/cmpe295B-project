@@ -1,0 +1,11 @@
+{
+	"patient_id": "neharege28@gmail.com",
+	"doctor_id": "jelsonsantos89@gmail.com",
+	"doctor_name": "Doctor Test",
+	"purpose": "Physical Exam",
+	"status": "pending",
+	"date": "2017-10-25",
+	"start_time": "10:00",
+	"end_time": "11:00",
+	"location": "Hospital Way"
+}
