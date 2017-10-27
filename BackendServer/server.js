@@ -3,6 +3,7 @@ var ExpressSession      =   require('express-session');
 var googleAPI           =   require('googleapis');
 // var googleAuth          =   require('google-auth-library');
 var bodyParser          =   require("body-parser");
+var cors                =   require('cors');
 
 var app                 =   express();
 var usersModel          =   require("./models/users");
@@ -19,7 +20,7 @@ var googlePlus          =   googleAPI.plus('v1');
 // const GOOGLE_CLIENT_SECRET  =   "3V7s3kjbdHalNkUFabMOG_9M";
 // const AUTH_REDIRECTION_URL  =   "http://localhost:5000/oauthCallback";
 
-
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended" : true}));
 app.set('json spaces', 3);
