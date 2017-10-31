@@ -5,26 +5,35 @@ var Alexa = require("alexa-sdk");
 var request = require("request");
 var Requests = require('./requests');
 
+var SessionStates = require('./handlers/sessionStates');
+
 var GOOGLE_USER_INFO = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=";
 // var launchRequestHandler = function () {
 //     this.emit(welcomeIntentHandler);
 // };
 
-var STATES = {
-	NEWSESSION : "_NEWSESSION",
-	INSESSION : "_INSESSION"
-};
+// var STATES = {
+// 	NEWSESSION : "_NEWSESSION",
+// 	REGULAR_SESSION : "REGULAR_SESSION",
+// 	SYMPTOMS_SESSION: "SYMPTOMS_SESSION"
+// };
 
 var newSessionHandler =  function(){
 	console.log("NEWSESSION HANDLER");
-	this.handler.state = STATES.INSESSION;
+	this.handler.state = SessionStates.states.REGULAR_SESSION;
 	var speechOutput = Messages.WELCOME + " " + Messages.HELP;
     var repromptSpeech =  Messages.HELP;
     this.attributes['session_symptoms'] = []
     this.emit(':ask', speechOutput, repromptSpeech);
 };
 
+
+////////////////////////////////////////////////////////////////////////
+//// REGULAR SESSION
+////////////////////////////////////////////////////////////////////////
+
 var launchRequestHandler = function () {
+	this.handler.state = SessionStates.states.REGULAR_SESSION;
 	console.log("LAUNCH_REQUEST");
 	var accessToken = this.event.session.user.accessToken;
 	console.log("ACCESS_TOKEN: "+ accessToken);
@@ -84,15 +93,17 @@ var launchRequestHandler = function () {
 
 var symptomIntentHandler = function () {
 	var slotVal = this.event.request.intent.slots.Symptom.value;
+	this.handler.state = SessionStates.states.SYMPTOMS_SESSION;
 	console.log("SLOT_VALUE: " + slotVal);
-	Requests.makeRequest();
+	//var url = "https://remote-health-api.herokuapp.com/api/prediction?symptoms=dehydration,headache&email=jesantos0527@gmail.com";
+	//Requests.makeRequest(url);
 	if(slotVal == null){
 		this.emit(':ask', Messages.ERROR, Messages.HELP);
 	}else{
 		console.log("SESSION_ATTRIBUTES: " + this.attributes['session_symptoms']);
 		this.attributes['session_symptoms'].push(slotVal);
-		//console.log("SLOT_VALUE: " + slotVal);
-	    this.emit(':ask', Messages.HELLO_WORLD, Messages.HELP);
+		console.log("SLOT_VALUE_REGULAR_SESSION: " + slotVal);
+	    this.emit(':ask', Messages.SYMPTOM_ASK, Messages.HELP);
 	}
 };
 
@@ -135,8 +146,43 @@ var unhandledIntentHandler = function () {
 //     this.emit(':ask', Messages.ERROR, Messages.HELP);
 // };
 
-var newSessionHandlers = {};
-newSessionHandlers['NewSession'] = newSessionHandler;
+////////////////////////////////////////////////////////////////////////
+//// SYMPTOM SESSION
+////////////////////////////////////////////////////////////////////////
+// var symptomIntentHandler = function () {
+// 	var slotVal = this.event.request.intent.slots.Symptom.value;
+// 	this.handler.state = STATES.SYMPTOMS_SESSION;
+// 	console.log("SLOT_VALUE: " + slotVal);
+// 	var url = "https://remote-health-api.herokuapp.com/api/prediction?symptoms=dehydration,headache&email=jesantos0527@gmail.com";
+// 	Requests.makeRequest(url);
+// 	if(slotVal == null){
+// 		this.emit(':ask', Messages.ERROR, Messages.HELP);
+// 	}else{
+// 		console.log("SESSION_ATTRIBUTES: " + this.attributes['session_symptoms']);
+// 		this.attributes['session_symptoms'].push(slotVal);
+// 		//console.log("SLOT_VALUE: " + slotVal);
+// 	    this.emit(':ask', Messages.HELLO_WORLD, Messages.HELP);
+// 	}
+// };
+
+// var yesIntentHandler = function () {
+// 	//this.attributes['session_symptoms'] = []
+// 	this.emit(':ask', Messages.YES + " " + Messages.HELP, Messages.HELP);
+// };
+
+// var noIntentHandler = function () {
+// 	this.attributes['session_symptoms'] = []
+// 	this.emit(":tell", Messages.GOODBYE);
+// };
+
+
+
+
+
+
+
+//var newSessionHandlers = {};
+//newSessionHandlers['NewSession'] = newSessionHandler;
 
 var handlers = {};
 handlers['Unhandled'] = unhandledIntentHandler;
@@ -151,6 +197,15 @@ handlers['AMAZON.YesIntent'] = yesIntentHandler;
 
 //handlers['CopyIntent'] = copyIntentHandler;
 
-var sessionHandlers = Alexa.CreateStateHandler(STATES.INSESSION, newSessionHandlers);
+//var sessionHandlers = Alexa.CreateStateHandler(SessionStates.states.REGULAR_SESSION, newSessionHandlers);
 
-module.exports = {sessionHandlers, handlers};
+var regularSessionHandlers = Alexa.CreateStateHandler(SessionStates.states.REGULAR_SESSION, handlers);
+
+
+var handlersNoSession = {};
+handlersNoSession['Unhandled'] = unhandledIntentHandler;
+handlersNoSession['LaunchRequest'] = launchRequestHandler;
+//module.exports = {sessionHandlers, handlers};
+module.exports = {handlersNoSession, regularSessionHandlers};
+
+
