@@ -30,6 +30,40 @@ exports.getAuthUrl = function(req, callback){
     callback(url, null);
 }
 
+exports.handleGoogleOauthCallback = function(req, callback){
+    var oauth2Client = getOAuthClient();
+    var code = req.query.code;
+    //console.log("OauthCallback Code: " + code);
+    var userProfile;
+
+    oauth2Client.getToken(code, function(err, tokens) {
+        //console.log("OAuth Tokens: " + tokens);
+        if(!err) {
+            oauth2Client.setCredentials(tokens);
+            var userGoogleProfile;
+            var plus = google.plus('v1');
+            plus.people.get({
+                userId: 'me',
+                auth: oauth2Client
+            }, function (err, response) {
+                userGoogleProfile = response;    
+                var emailID = userGoogleProfile.emails[0].value;
+                var query = {"_id" : emailID};
+                var conditions = {'google_calendar_token' : tokens};
+
+                var responseJson = {
+                    "email_id" : emailID,
+                    "google_calendar_token" : tokens
+                };
+                callback(null, responseJson);
+                //updateUserCalendarToken(query, conditions, callback)
+            });
+        }else{
+            callback(err,null);
+        }
+    });
+}
+
 exports.handleOauthCallback = function(req, callback){
 	var oauth2Client = getOAuthClient();
 	var code = req.query.code;

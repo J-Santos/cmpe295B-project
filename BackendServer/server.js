@@ -4,6 +4,7 @@ var googleAPI           =   require('googleapis');
 // var googleAuth          =   require('google-auth-library');
 var bodyParser          =   require("body-parser");
 var cors                =   require('cors');
+var cookieParser        =   require('cookie-parser');
 
 var app                 =   express();
 var usersModel          =   require("./models/users");
@@ -21,6 +22,7 @@ var googlePlus          =   googleAPI.plus('v1');
 // const AUTH_REDIRECTION_URL  =   "http://localhost:5000/oauthCallback";
 
 app.use(cors());
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended" : true}));
 app.set('json spaces', 3);
@@ -36,11 +38,118 @@ router.get("/",function(req,res){
     res.json({"error" : false,"message" : "Hello World"});
 });
 
+
+app.use(express.static('html'));
+
+router.route("/api/test2")
+    .get(function(req,res){
+        //res.cookie('cookieName',{'email': 'jesantos0527@gmail.com', 'googleToken': 'googleToke'}, { maxAge: 900000, httpOnly: true })
+        console.log("Cookies: " + JSON.stringify(req.cookies));
+        console.log("REQ: " + JSON.stringify(req.session));
+        // res.cookie("testing", {'email': 'jesantos0527@gmail.com', 'googleToken': 'googleToke'}).send(`
+        //     <h1>Authentication using google oAuth<h1>
+        //     <a href=test.html>Login</a>
+        // `);
+        //res.cookie("remoteHealthGoogleToken", {'email': 'jesantos0527@gmail.com', 'googleToken': 'googleToke'})
+        //.cookie("remoteHealthUserEmail", 'jesantos0527@gmail.com')
+        res.redirect('/index.html');
+        //console.log("RES: "+res/*JSON.stringify(res)*/);
+        // res.send(`
+        //     <h1>Authentication using google oAuth<h1>
+        //     <a href=test.html>Login</a>
+        // `)
+        // var url = googleCalendarModel.getAuthUrl();
+        // console.log(url);
+        // res.send(`
+        //     <h1>Authentication using google oAuth<h1>
+        //     <a href=${url}>Login</a>
+        // `)
+    });
+
+router.route("/api/test")
+    // .get(function(req,res){
+    //     //res.cookie('cookieName',{'email': 'jesantos0527@gmail.com', 'googleToken': 'googleToke'}, { maxAge: 900000, httpOnly: true })
+    //     console.log("Cookies: " + JSON.stringify(req.cookies));
+    //     console.log("REQ: " + JSON.stringify(req.session));
+    //     // res.cookie("testing", {'email': 'jesantos0527@gmail.com', 'googleToken': 'googleToke'}).send(`
+    //     //     <h1>Authentication using google oAuth<h1>
+    //     //     <a href=test.html>Login</a>
+    //     // `);
+    //     res.cookie("remoteHealthGoogleToken", {'email': 'jesantos0527@gmail.com', 'googleToken': 'googleToke'})
+    //     .cookie("remoteHealthUserEmail", 'jesantos0527@gmail.com')
+    //     .redirect('/index.html');
+    //     //console.log("RES: "+res/*JSON.stringify(res)*/);
+    //     // res.send(`
+    //     //     <h1>Authentication using google oAuth<h1>
+    //     //     <a href=test.html>Login</a>
+    //     // `)
+    //     // var url = googleCalendarModel.getAuthUrl();
+    //     // console.log(url);
+    //     // res.send(`
+    //     //     <h1>Authentication using google oAuth<h1>
+    //     //     <a href=${url}>Login</a>
+    //     // `)
+    // })
+    .post(function(req,res){
+        var response = res;
+        //console.log("Post Body: " + JSON.stringify(req.body));
+        var body = req.body;
+        body.google_calendar_token = req.cookies.remoteHealthGoogleToken;
+
+        // console.log("Post Cookies Token: " + JSON.stringify(req.cookies.remoteHealthGoogleToken));
+        // console.log("Post Cookies Email: " + JSON.stringify(req.cookies.remoteHealthUserEmail));
+        // console.log("Body: " + JSON.stringify(body));
+        res.clearCookie('remoteHealthGoogleToken');
+        res.status(201).json({ message: 'User created!' });
+        //var db = new usersModel();
+        // var response = res;
+        // // fetch email and password from REST request.
+        // // Add strict validation when you use this in Production.
+        
+        // db.userEmail = req.body.email; 
+        // // Hash the password using SHA1 algorithm.
+        // db.userPassword =  require('crypto')
+        //                   .createHash('sha1')
+        //                   .update(req.body.password)
+        //                   .digest('base64');
+    });
+
+////////////////////////////////////////////////////////////////
+/// Authentication TEST
+////////////////////////////////////////////////////////////////
+
+router.route("/authenticate")
+    .get(function(req,res){
+        googleCalendarModel.getAuthUrl(req,function(url, err){
+            if (err){
+                res.status(500).send(err.message);
+            }else{
+                res.status(200).json({"authUrl": url});
+            }
+        });
+});
+
+router.route("/authenticate/oauthCallback")
+    .get(function(req,res){
+        googleCalendarModel.handleGoogleOauthCallback(req,function(err, info){
+            if (err){
+                res.send(`<h3>Login failed!!</h3>;`);
+            }else{
+                res.cookie("remoteHealthGoogleToken", info.google_calendar_token)
+                   .cookie("remoteHealthUserEmail", info.email_id)
+                   .redirect('/register.html');
+            }
+        });
+});
+
+
+
+
 ////////////////////////////////////////////////////////////////
 /// Authentication
 ////////////////////////////////////////////////////////////////
 
-router.route("/authenticate")
+router.route("/api/authenticate")
     .get(function(req,res){
         googleCalendarModel.getAuthUrl(req,function(url, err){
             if (err){
@@ -65,7 +174,7 @@ router.route("/authenticate")
         // `)
 });
 
-router.route("/authenticate/oauthCallback")
+router.route("/api/authenticate/oauthCallback")
     .get(function(req,res){
         googleCalendarModel.handleOauthCallback(req,function(err, user){
             if (err){
@@ -114,14 +223,8 @@ router.route("/api/prediction")
 
 router.route("/api/users")
     .get(function(req,res){
-        // var query = {
-        //     email : req.param.email,
-        //     password : req.param.password
-        // }
-        //console.log('Before getUsers');
         usersModel.getUsers(req,function(err,users){
             if (err){
-                //console.log('before 500');
                 res.status(500).send(err.message);
             }
             else if(users == undefined || users == null ){
@@ -134,27 +237,22 @@ router.route("/api/users")
     })
 
     .post(function(req,res){
-        var response = res;
-        //console.log(req.body);
+        // console.log("Post Cookies Token: " + JSON.stringify(req.cookies.remoteHealthGoogleToken));
+        // console.log("Post Cookies Email: " + JSON.stringify(req.cookies.remoteHealthUserEmail));
+        if(req.cookies.remoteHealthGoogleToken){
+            var req_temp = req;
+            req_temp.body.google_calendar_token = req.cookies.remoteHealthGoogleToken;
+            req = req_temp;
+        }
         usersModel.createUser(req, function (err){
             if(err){
                 res.status(500).send(err.message);
             }
             else{
+                res.clearCookie('remoteHealthGoogleToken');
                 res.status(201).json({ message: 'User created!' });
             }
         });
-        //var db = new usersModel();
-        // var response = res;
-        // // fetch email and password from REST request.
-        // // Add strict validation when you use this in Production.
-        
-        // db.userEmail = req.body.email; 
-        // // Hash the password using SHA1 algorithm.
-        // db.userPassword =  require('crypto')
-        //                   .createHash('sha1')
-        //                   .update(req.body.password)
-        //                   .digest('base64');
     });
 
 router.route("/api/users/:user_id")

@@ -12,7 +12,6 @@ exports.createUser = function (req,callback){
 			return callback(new Error("User already exists."));
 		}
 		new_user.save(function(err) {
-			//console.log(err);
         	callback(err);
     	});
 	});
