@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "alexa-sdk": "^1.0.14",
+    "dateformat": "^3.0.2",
     "request": "^2.81.0"
   }
 }
