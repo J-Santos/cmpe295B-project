@@ -135,8 +135,8 @@ router.route("/authenticate/oauthCallback")
             if (err){
                 res.send(`<h3>Login failed!!</h3>;`);
             }else{
-                res.cookie("remoteHealthGoogleToken", info.google_calendar_token)
-                   .cookie("remoteHealthUserEmail", info.email_id)
+                res.cookie("remoteHealthGoogleToken", info.google_calendar_token, {domain : "localhost"})
+                   .cookie("remoteHealthUserEmail", info.email_id, {domain : "localhost"})
                    .redirect('http://localhost:5000/register.html');
             }
         });
