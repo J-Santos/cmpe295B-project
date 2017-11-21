@@ -137,7 +137,7 @@ router.route("/authenticate/oauthCallback")
             }else{
                 res.cookie("remoteHealthGoogleToken", info.google_calendar_token)
                    .cookie("remoteHealthUserEmail", info.email_id)
-                   .redirect('/register.html');
+                   .redirect('http://localhost:5000/register.html');
             }
         });
 });
