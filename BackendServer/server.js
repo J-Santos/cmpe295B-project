@@ -142,8 +142,8 @@ router.route("/authenticate/oauthCallback")
                 var redirectURL = urlModule.format({
                     pathname: "http://localhost:5000/landingpage.html",
                     query: {
-                        "email": info.email_id,
-                        "token": info.google_calendar_token
+                        "email": JSON.stringify(info.email_id),
+                        "token": JSON.stringify(info.google_calendar_token)
                     }
                 });
                 res.redirect(redirectURL);
