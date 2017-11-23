@@ -11,6 +11,7 @@ var appointmentSchema  = new mongoose.Schema({
 	"end_time": {type: Date},
 	"location": {type: String},
 	"google_event_link": {type: String},
+	"google_event_id": {type: String},
 	"start_time_timestamp": {type: Number}
 });
 

@@ -6,8 +6,8 @@ var OAUTH2            		=   google.auth.OAuth2;
 
 const GOOBLE_CLIENT_ID      =   "310398537432-4ctsbrma6krd85bsgdvbv6h4vttbt9hs.apps.googleusercontent.com";
 const GOOGLE_CLIENT_SECRET  =   "A8s3j6VY8zuQ1atA5-VwgEcL";
-//const AUTH_REDIRECTION_URL  =   "http://localhost:5000/authenticate/oauthCallback";
-const AUTH_REDIRECTION_URL  =   "https://remote-health-api.herokuapp.com/authenticate/oauthCallback";
+const AUTH_REDIRECTION_URL  =   "http://localhost:5000/api/authenticate/oauthCallback";
+//const AUTH_REDIRECTION_URL  =   "https://remote-health-api.herokuapp.com/authenticate/oauthCallback";
 
 function getOAuthClient () {
     return new OAUTH2(GOOBLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, AUTH_REDIRECTION_URL);
@@ -110,13 +110,13 @@ exports.approveAppointment = function(query, callback){
 	var query_user = {
 		"_id" :  query["patient_id"]
 	}
-
 	usersModel.getUser(query_user,function(err,user){
         if (err){
             callback(err, user);
         }else if(user == undefined || user == null || user == []){
             callback(true, null);
         }else{
+            //console.log(user["google_calendar_token"]);
             var tokens = user["google_calendar_token"];
             appointmentsModel.getAppointment(query, function(err,appointment){
             	//console.log(appointment);
@@ -130,12 +130,43 @@ exports.approveAppointment = function(query, callback){
 	        });
         }
     });
+}
 
+exports.cancelAppointment = function(query, callback){
+    appointmentsModel.getAppointment(query, function(err,appointment){
+        if (err){
+            callback(err);
+        }else if(appointment == undefined || appointment == null || appointment == []){
+            callback(true);
+        }else{
+            if(appointment["status"] == "pending"){
+                //console.log("Pending appt only");
+                appointmentsModel.deleteAppointment(query, function(err){
+                    callback(err);
+                }); 
+            }else{
+                var query_user = {
+                    "_id" :  appointment["patient_id"]
+                };
+                usersModel.getUser(query_user,function(err,user){
+                    if (err){
+                        callback(err);
+                    }else if(user == undefined || user == null || user == []){
+                        callback(true);
+                    }else{
+                        var tokens = user["google_calendar_token"];
+                        //console.log("deleteEventFromGoogleCalendar()");
+                        deleteEventFromGoogleCalendar(appointment, tokens, callback);
+                    }
+                });
+            }
+        }
+    });
 }
 
 function buildEventObject(appointment){
 	var event = {
-		'summary': 'Dr. '+ appointment["doctor_name"] +' Visit',
+		'summary': 'Doctor '+ appointment["doctor_name"] +' Visit',
 		'location': appointment["location"],
 		'description': appointment["purpose"],
 		'start': {
@@ -150,7 +181,8 @@ function buildEventObject(appointment){
 			'RRULE:FREQ=DAILY;COUNT=2'
 		],
 		'attendees': [
-			{'email': appointment["patient_id"]}
+			{'email': appointment["patient_id"]},
+            {'email': appointment["doctor_id"]}
 		],
 		'reminders': {
 			'useDefault': false,
@@ -184,7 +216,8 @@ function addEventToGoogleCalendar(appointment, tokens, callback){
         }
         var update_query = {
         	"status" : "approved",
-        	"google_event_link" : event.htmlLink
+        	"google_event_link" : event.htmlLink,
+            "google_event_id" : event.id
         }
         appointmentsModel.updateAppointment(id_query, update_query, function(err,appointment){
             if (err){
@@ -198,6 +231,25 @@ function addEventToGoogleCalendar(appointment, tokens, callback){
     });
 }
 
+function deleteEventFromGoogleCalendar(appointment, tokens, callback){
+    var oauth2Client = getOAuthClient();
+    oauth2Client.setCredentials(tokens);
 
+    calendar.events.delete({
+        auth: oauth2Client,
+        calendarId: 'primary',
+        eventId: appointment["google_event_id"]
+    }, function(err, event) {
+        if (err) {
+            callback(err,null);
+        }
+        var id_query = {
+            "_id" : appointment["_id"]
+        }
+        appointmentsModel.deleteAppointment(id_query, function(err){
+            callback(err);
+        });
+    });
+}
 
 

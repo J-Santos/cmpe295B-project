@@ -358,11 +358,13 @@ router.route("/api/appointments/:appointment_id")
     })
 
     .delete(function(req, res) {
-        appointmentsModel.deleteAppointment(req,function(err){
-            if (err)
+        googleCalendarModel.cancelAppointment({_id : req.params.appointment_id},function(err){
+            if (err){
                 res.status(500).send(err.message);
-            else
+            }
+            else{
                 res.status(200).json({ message: 'Appointment deleted' });
+            }
         });
     });
 
@@ -477,7 +479,7 @@ router.route("/api/users/:user_id/appointments/:appointment_id")
     })
 
     .delete(function(req, res) {
-        appointmentsModel.deleteAppointment(req,function(err){
+        appointmentsModel.deleteAppointment({_id : req.params.appointment_id},function(err){
             if (err)
                 res.status(500).send(err.message);
             else

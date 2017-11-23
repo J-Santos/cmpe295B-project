@@ -50,8 +50,8 @@ exports.getAppointment = function (query, callback){
     });
 }
 
-exports.deleteAppointment = function (req,callback){
-	Appointment.remove({_id : req.params.appointment_id}, function(err) {
+exports.deleteAppointment = function (query,callback){
+	Appointment.remove(query, function(err) {
         callback(err);
     });
 }
