@@ -5,6 +5,7 @@ var googleAPI           =   require('googleapis');
 var bodyParser          =   require("body-parser");
 var cors                =   require('cors');
 var cookieParser        =   require('cookie-parser');
+var urlModule           =   require('url');
 
 var app                 =   express();
 var usersModel          =   require("./models/users");
@@ -135,9 +136,17 @@ router.route("/authenticate/oauthCallback")
             if (err){
                 res.send(`<h3>Login failed!!</h3>;`);
             }else{
-                res.cookie("remoteHealthGoogleToken", info.google_calendar_token, {domain : "localhost"})
-                   .cookie("remoteHealthUserEmail", info.email_id, {domain : "localhost"})
-                   .redirect('http://localhost:5000/register.html');
+                // res.cookie("remoteHealthGoogleToken", info.google_calendar_token, {domain : "localhost"})
+                //    .cookie("remoteHealthUserEmail", info.email_id, {domain : "localhost"})
+                //    .redirect('http://localhost:5000/register.html');
+                var redirectURL = url.format({
+                    pathname:"http://localhost:5000/landingpage.html",
+                    query: {
+                        "email": info.email_id,
+                        "token": info.google_calendar_token
+                    }
+                });
+                res.redirect(redirectURL);
             }
         });
 });
