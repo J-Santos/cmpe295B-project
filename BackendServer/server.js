@@ -139,8 +139,8 @@ router.route("/authenticate/oauthCallback")
                 // res.cookie("remoteHealthGoogleToken", info.google_calendar_token, {domain : "localhost"})
                 //    .cookie("remoteHealthUserEmail", info.email_id, {domain : "localhost"})
                 //    .redirect('http://localhost:5000/register.html');
-                var redirectURL = url.format({
-                    pathname:"http://localhost:5000/landingpage.html",
+                var redirectURL = urlModule.format({
+                    pathname: "http://localhost:5000/landingpage.html",
                     query: {
                         "email": info.email_id,
                         "token": info.google_calendar_token
