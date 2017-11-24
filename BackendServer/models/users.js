@@ -99,7 +99,7 @@ exports.updateUserAppointmentComments = function (query, comment, callback){
 		else if(user == null){
 			return callback(new Error("User not found"), null);
 		}
-		user.appointment_comments.push(comment);
+		user.medical_record.appointment_comments.push(comment);
 		user.save(callback(err, user));
 	});
 }

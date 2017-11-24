@@ -26,10 +26,10 @@ var userSchema  = new mongoose.Schema({
         "gender": {type: String},
         "age": {type: Number},
     	"family_medical_history": {type: mongoose.Schema.Types, ref: 'FamilyMedicalHistory'},
-        "personal_medical_history": {type: mongoose.Schema.Types, ref: 'personalMedicalHistory'}
+        "personal_medical_history": {type: mongoose.Schema.Types, ref: 'personalMedicalHistory'},
+        "appointment_comments": [{type: String}]
     },
-    "google_calendar_token": {type: mongoose.Schema.Types, ref: 'GoogleToken'},
-    "appointment_comments": [{type: String}]
+    "google_calendar_token": {type: mongoose.Schema.Types, ref: 'GoogleToken'}
 });
 
 exports.User = mongoose.model('User', userSchema);
