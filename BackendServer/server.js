@@ -304,6 +304,21 @@ router.route("/api/users/:user_id")
         });
     });
 
+router.route("/api/users/:user_id/:password/login")
+    .get(function(req,res){
+        usersModel.authenticateUserLogin({'_id': req.params.user_id, 'password': req.params.password},function(err, user, login){
+            if (err){
+                res.status(500).send(err.message);
+            }else if(user == undefined || user == null){
+                res.status(404).json({ message: 'User not found' });
+            }else if(login){
+                res.status(200).json({ message: 'Login Successful!' });
+            }else{
+                res.status(401).json({ message: 'Login Failed' });
+            }
+        });
+    });
+
 ////////////////////////////////////////////////////////////////
 /// Appointments
 ////////////////////////////////////////////////////////////////
@@ -390,6 +405,18 @@ router.route("/api/appointments/:appointment_id/:user_id/approve")
                 res.status(204).send();
             }
         });
+
+        appointmentsModel.updateAppointment({_id : req.params.appointment_id},req.body,function(err,appointment){
+            if (err){
+                res.status(500).send(err.message);
+            }
+            else if(appointment == undefined || appointment == null  ){
+                res.status(404).json({ message: 'Appointment not found' });
+            }
+            else{
+                res.status(204).send();
+            }
+        });
     });
 
 router.route("/api/appointments/patient/:user_id")
@@ -418,6 +445,21 @@ router.route("/api/appointments/doctor/:user_id")
             }
             else{
                 res.status(200).json(appointments);
+            }
+        });
+    });
+
+router.route("/api/appointments/:appointment_id/finish")
+    .put(function(req, res) {
+        appointmentsModel.finishAppointment({"_id":req.params.appointment_id, "user_id":req.body.user_id, "doctor_comment": req.body.doctor_comment}, function(err, appointment, user){
+            if (err){
+                res.status(500).send(err.message);
+            }else if(appointment == undefined || appointment == null  ){
+                res.status(404).json({ message: 'Appointment not found' });
+            }else if(user == undefined || user == null  ){
+                res.status(404).json({ message: 'User not found' });
+            }else{
+                res.status(204).send();
             }
         });
     });

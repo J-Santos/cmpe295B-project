@@ -12,6 +12,7 @@ var PersonalMedicalHistory = personalMedicalHistorySchema.PersonalMedicalHistory
 
 var userSchema  = new mongoose.Schema({
     "_id" : {type: String},
+    "password" : {type: String},
     "name": {
     	"first_name": {type: String},
     	"last_name": {type: String},
@@ -28,10 +29,7 @@ var userSchema  = new mongoose.Schema({
         "personal_medical_history": {type: mongoose.Schema.Types, ref: 'personalMedicalHistory'}
     },
     "google_calendar_token": {type: mongoose.Schema.Types, ref: 'GoogleToken'},
-    //"upcoming_appointments": [{type: mongoose.Schema.Types.ObjectId, ref: 'Appointment'}],
-    //"pending_appointments": [{type: mongoose.Schema.Types.ObjectId, ref: 'Appointment'}],
-    //"past_appointments": [{type: mongoose.Schema.Types.ObjectId, ref: 'Appointment'}],
-    //"patients": [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
+    "appointment_comments": [{type: String}]
 });
 
 exports.User = mongoose.model('User', userSchema);

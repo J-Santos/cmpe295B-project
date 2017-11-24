@@ -1,7 +1,10 @@
-var userModel = require('../schemas/user');
-var User = userModel.User;
+var Bcrypt 		= require('bcrypt-nodejs');
+var userModel 	= require('../schemas/user');
+var User 		= userModel.User;
 
 exports.createUser = function (req,callback){
+	var password = req.body.password;
+	req.body.password = Bcrypt.hashSync(password, Bcrypt.genSaltSync(8), null);
 	var new_user = new User(req.body);
 	User.findOne({"_id":req.body._id},function(err,user){	
 		//console.log(user);
@@ -19,8 +22,30 @@ exports.createUser = function (req,callback){
 
 exports.getUser = function (query, callback){
 	//console.log("User id: ",req.params.user_id);
-	User.findOne(query).exec(function(err, user) {
+	User.findOne(query, {"password":0}).exec(function(err, user) {
         callback(err,user);
+    });
+}
+
+exports.authenticateUserLogin = function (query, callback){
+	console.log("ID: " + query._id);
+	console.log("Password: " + query.password);
+	User.findOne({'_id': query._id}).exec(function(err, user) {
+        if (err){
+        	console.log("Password 1: " + query.password);
+            callback(err, null, null);
+        }else if(user == undefined || user == null){
+        	console.log("Password 2: " + query.password);
+            callback(null, user, null);
+        }else{
+            if(Bcrypt.compareSync(query.password, user.password)){
+            	console.log("Password 3: " + query.password);
+            	callback(null, user, true);
+            }else{
+            	console.log("Password 4: " + query.password);
+            	callback(null, user, false);
+            }
+        }
     });
 }
 
@@ -36,15 +61,20 @@ exports.updateUser = function (query, conditions, callback){
 		for (var key in conditions){
 			if(key == '_id'){
 				return callback(new Error('Email is unique and cannot be modified'), null)
+			}else if(key == 'password'){
+				var pwd = conditions[key];
+				pwd = Bcrypt.hashSync(pwd, Bcrypt.genSaltSync(8), null)
+				user[key] = pwd;
+			}else{
+				user[key] = conditions[key];
 			}
-			user[key] = conditions[key];
 		}
 		user.save(callback(err, user));
 	});
 }
 
 exports.getUsers = function (query,callback){
-	User.find({},function(err, users) {
+	User.find({}, {"password":0},function(err, users) {
 		callback(err,users)
 	});
 }
@@ -56,9 +86,22 @@ exports.deleteUser = function (req,callback){
 }
 
 exports.getUserPatients = function (req,callback){
-	User.find({'user_type': 'patient', 'doctor_id': req.params.user_id},function(err, users) {
+	User.find({'user_type': 'patient', 'doctor_id': req.params.user_id}, {"password":0}, function(err, users) {
 		callback(err,users)
 	});	
+}
+
+exports.updateUserAppointmentComments = function (query, comment, callback){
+	User.findOne(query,function(err,user){	
+		if(err){
+			return callback(err,null);
+		}
+		else if(user == null){
+			return callback(new Error("User not found"), null);
+		}
+		user.appointment_comments.push(comment);
+		user.save(callback(err, user));
+	});
 }
 
 // exports.getUsers = function (req,callback){

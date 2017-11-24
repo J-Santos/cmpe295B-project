@@ -1,8 +1,8 @@
-var appointmentSchema = require('../schemas/appointment');
-var Appointment = appointmentSchema.Appointment;
-
-var userSchema = require('../schemas/user');
-var User = userSchema.User;
+var appointmentSchema 	= require('../schemas/appointment');
+var Appointment 		= appointmentSchema.Appointment;
+var userSchema 			= require('../schemas/user');
+var usersModel          = require("./users");
+var User 				= userSchema.User;
 
 exports.addAppointment = function(req, callback){
 	//console.log("addAppointment ...")
@@ -104,6 +104,29 @@ exports.updateAppointment = function (query, conditions, callback){
 	});
 }
 
+exports.finishAppointment = function (query, callback){
+	Appointment.findOne({"_id": query._id},function(err,appointment){	
+		if(err){
+			return callback(err,null, null);
+		}
+		else if(appointment == null){
+			return callback(new Error("Appointment not found"), null, null);
+		}
+		else{
+			appointment["status"] = "finished";
+			appointment.save(function(err){
+				if(err){
+					callback(err, appointment, null);
+				}else{
+					usersModel.updateUserAppointmentComments({'_id': query.user_id}, query.doctor_comment, function(err, user){
+						callback(err, appointment ,user)
+
+					});
+				}
+			});
+		}
+	});
+}
 // exports.addAppointment = function (query, req, callback){
 // 	//console.log("addAppointment ...")
 // 	//console.log(req.body);
