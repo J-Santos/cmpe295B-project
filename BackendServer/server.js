@@ -312,7 +312,7 @@ router.route("/api/users/:user_id/:password/login")
             }else if(user == undefined || user == null){
                 res.status(404).json({ message: 'User not found' });
             }else if(login){
-                res.status(200).json({ message: 'Login Successful!' });
+                res.status(200).json({ message: 'Login Successful!', user_type: user.user_type });
             }else{
                 res.status(401).json({ message: 'Login Failed' });
             }

@@ -28,21 +28,21 @@ exports.getUser = function (query, callback){
 }
 
 exports.authenticateUserLogin = function (query, callback){
-	console.log("ID: " + query._id);
-	console.log("Password: " + query.password);
+	//console.log("ID: " + query._id);
+	//console.log("Password: " + query.password);
 	User.findOne({'_id': query._id}).exec(function(err, user) {
         if (err){
-        	console.log("Password 1: " + query.password);
+        	//console.log("Password 1: " + query.password);
             callback(err, null, null);
         }else if(user == undefined || user == null){
-        	console.log("Password 2: " + query.password);
+        	//console.log("Password 2: " + query.password);
             callback(null, user, null);
         }else{
             if(Bcrypt.compareSync(query.password, user.password)){
-            	console.log("Password 3: " + query.password);
+            	//console.log("Password 3: " + query.password);
             	callback(null, user, true);
             }else{
-            	console.log("Password 4: " + query.password);
+            	//console.log("Password 4: " + query.password);
             	callback(null, user, false);
             }
         }
