@@ -16,6 +16,7 @@ exports.addAppointment = function(req, callback){
 
 	var format_req = {
 		"patient_id": req.body.patient_id,
+		"patient_name": req.body.patient_name,
 		"doctor_id": req.body.doctor_id,
 		"doctor_name": req.body.doctor_name,
 		"purpose": req.body.purpose,
