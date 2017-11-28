@@ -2,6 +2,7 @@ var mongoose    =   require("mongoose");
 
 var appointmentSchema  = new mongoose.Schema({
 	"patient_id": {type: String},
+	"patient_name": {type: String},
 	"doctor_id": {type: String},
 	"doctor_name": {type: String},
 	"purpose": {type: String},
