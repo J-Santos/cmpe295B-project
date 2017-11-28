@@ -91,6 +91,12 @@ exports.getUserPatients = function (req,callback){
 	});	
 }
 
+exports.getDoctors = function (req,callback){
+	User.find({'user_type': 'doctor'}, {"password":0}, function(err, users) {
+		callback(err,users)
+	});	
+}
+
 exports.updateUserAppointmentComments = function (query, comment, callback){
 	User.findOne(query,function(err,user){	
 		if(err){
