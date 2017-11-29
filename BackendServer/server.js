@@ -140,7 +140,7 @@ router.route("/authenticate/oauthCallback")
                 //    .cookie("remoteHealthUserEmail", info.email_id, {domain : "localhost"})
                 //    .redirect('http://localhost:5000/register.html');
                 var redirectURL = urlModule.format({
-                    pathname: "http://localhost:5000/landingpage.html",
+                    pathname: "http://ec2-34-205-171-38.compute-1.amazonaws.com:5000/landingpage.html",
                     query: {
                         "email": JSON.stringify(info.email_id),
                         "token": JSON.stringify(info.google_calendar_token)
