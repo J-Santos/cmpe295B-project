@@ -142,7 +142,7 @@ router.route("/authenticate/oauthCallback")
                 var redirectURL = urlModule.format({
                     pathname: "http://ec2-34-205-171-38.compute-1.amazonaws.com:5000/landingpage.html",
                     query: {
-                        "email": JSON.stringify(info.email_id),
+                        "email": info.email_id,
                         "token": JSON.stringify(info.google_calendar_token)
                     }
                 });
