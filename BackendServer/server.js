@@ -480,6 +480,20 @@ router.route("/api/appointments/:appointment_id/finish")
         });
     });
 
+router.route("/api/appointments/doctor/:user_id/today")
+    .get(function(req,res){
+        appointmentsModel.getTodayAppointmentsByUser({"doctor_id" : req.params.user_id},function(err,appointments){
+            if (err){
+                res.status(500).send(err.message);
+            }
+            else if(appointments == undefined || appointments == null || appointments == []){
+                res.status(404).json({ message: 'Appointments not found' })
+            }
+            else{
+                res.status(200).json(appointments);
+            }
+        });
+    });
 ////////////////////////////////////////////////////////////////
 /// 
 ////////////////////////////////////////////////////////////////

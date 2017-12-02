@@ -45,6 +45,20 @@ exports.getAppointmentsByUser = function (query, callback){
     });
 }
 
+exports.getTodayAppointmentsByUser = function (query, callback){
+	var todayDate = new Date();
+	var year = todayDate.getFullYear();
+	var month = todayDate.getMonth() + 1;
+	var day = todayDate.getDate();
+	var todayDateFormat = year + "-" + month + "-" + 1;
+	query.date = new Date(todayDateFormat);
+	query.date.setHours(-8,0,0,0);
+
+	Appointment.find(query).sort({"start_time_timestamp": 1}).exec(function(err, appointments) {
+        callback(err,appointments);
+    });
+}
+
 exports.getAppointment = function (query, callback){
 	Appointment.findOne(query).exec(function(err, appointment) {
         callback(err,appointment);
