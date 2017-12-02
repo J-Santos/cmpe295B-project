@@ -246,8 +246,6 @@ router.route("/api/users")
     })
 
     .post(function(req,res){
-        // console.log("Post Cookies Token: " + JSON.stringify(req.cookies.remoteHealthGoogleToken));
-        // console.log("Post Cookies Email: " + JSON.stringify(req.cookies.remoteHealthUserEmail));
         if(req.cookies.remoteHealthGoogleToken){
             var req_temp = req;
             req_temp.body.google_calendar_token = req.cookies.remoteHealthGoogleToken;
@@ -258,7 +256,6 @@ router.route("/api/users")
                 res.status(500).send(err.message);
             }
             else{
-                res.clearCookie('remoteHealthGoogleToken');
                 res.status(201).json({ message: 'User created!' });
             }
         });
@@ -326,7 +323,7 @@ router.route("/api/doctors")
                 res.status(500).send(err.message);
             }
             else if(users == undefined || users == null ){
-                res.status(404).json({ message: 'User not found 1' })
+                res.status(404).json({ message: 'User not found' })
             }
             else{
                 res.status(200).json(users);
