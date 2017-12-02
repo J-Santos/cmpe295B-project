@@ -5,13 +5,9 @@ var usersModel          = require("./users");
 var User 				= userSchema.User;
 
 exports.addAppointment = function(req, callback){
-	//console.log("addAppointment ...")
-	//console.log(req.body);
-	//console.log(req);
-	//console.log("addAppointment ...")
-	var startTime = req.body.date + "T"+ req.body.start_time;// + ":00-07:00";
+	var startTime = req.body.date + "T"+ req.body.start_time;
 	var startTimeDate = new Date(startTime);
-	var endTime = req.body.date + "T"+ req.body.end_time;// + ":00-07:00";
+	var endTime = req.body.date + "T"+ req.body.end_time;
 	var endTimeDate = new Date(endTime);
 
 	var format_req = {
@@ -26,8 +22,7 @@ exports.addAppointment = function(req, callback){
 		"end_time": endTimeDate,
 		"location": req.body.location,
 		"start_time_timestamp": startTimeDate.getTime()
-	}
-	//console.log(format_req);
+	};
 	var new_appt = new Appointment(format_req);
 	new_appt.save(function(err){
 		callback(err);
@@ -142,72 +137,13 @@ exports.finishAppointment = function (query, callback){
 		}
 	});
 }
-// exports.addAppointment = function (query, req, callback){
-// 	//console.log("addAppointment ...")
-// 	//console.log(req.body);
-// 	//console.log(req);
-// 	//console.log("addAppointment ...")
-// 	var new_appt = new Appointment(req.body);
-// 	User.findOne(query,function(err,user){	
-// 		if(err){
-// 			return callback(err,null);
-// 		}
-// 		else if(user == null){
-// 			return callback(new Error("User not found"),null );
-// 		}
-// 		// console.log(user.medical_record.upcoming_appts);
-// 		// user.upcoming_appts.push(new_appt);
-// 		// user.save(callback(err, user));
-// 		//console.log(new_appt);
-// 		new_appt.save(function(err){
-// 			if(err){
-// 				return callback(err, null);
-// 			}
-// 			user.upcoming_appts.push(new_appt);
-// 			user.save(callback(err, user));
-// 		});
-// 	});
-// }
 
 exports.getUserAppointments = function (req, callback){
 	//console.log("User id: ",req.params.user_id);
 	//User.find({'email': req.params.user_id}).select('-address -medical_record -password -phone')
 	User.find({'email': req.params.user_id}).select('_id email patient_id upcoming_appts')
 	.populate({path: 'upcoming_appts',options: { sort: { 'creationDate': -1 } }} )
-	//.populate({path: 'timeline.images', select : '_id data'} )
 	.exec(function(err, user) {
 		callback(err,user);
 	});
 }
-
-// exports.getAppointment = function (query, callback){
-// 	Appointment.findOne(query).exec(function(err, appointment) {
-//         callback(err,appointment);
-//     });
-// }
-
-// exports.updateAppointment = function (query, conditions, callback){
-// 	//console.log("User body: "+JSON.stringify(conditions));
-// 	Appointment.findOne(query,function(err,appointment){	
-// 		if(err){
-// 			return callback(err,null);
-// 		}
-// 		else if(appointment == null){
-// 			return callback(new Error("Appointment not found"),null );
-// 		}
-		
-// 		for (var key in conditions){
-// 			if(key == '_id' || key == 'patient_id'){
-// 				return callback(new Error(key + ' is unique and cannot be modified'), null)
-// 			}
-// 			appointment[key] = conditions[key];
-// 		}
-// 		appointment.save(callback(err, appointment));
-// 	});
-// }
-
-// exports.deleteAppointment = function (req,callback){
-// 	Appointment.remove({_id : req.params.appointment_id}, function(err) {
-//             callback(err);
-//     });
-// }

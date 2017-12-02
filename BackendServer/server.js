@@ -1,7 +1,6 @@
 var express             =   require("express");
 var ExpressSession      =   require('express-session');
 var googleAPI           =   require('googleapis');
-// var googleAuth          =   require('google-auth-library');
 var bodyParser          =   require("body-parser");
 var cors                =   require('cors');
 var cookieParser        =   require('cookie-parser');
@@ -16,12 +15,6 @@ var googleCalendarModel =   require("./models/googleCalendar");
 var router              =   express.Router();
 var googlePlus          =   googleAPI.plus('v1');
 
-// var AUTH                =   new googleAuth();
-
-// const GOOBLE_CLIENT_ID      =   "358070701669-5dbjhb636kcai0d05t811pmhiee4rqs2.apps.googleusercontent.com";
-// const GOOGLE_CLIENT_SECRET  =   "3V7s3kjbdHalNkUFabMOG_9M";
-// const AUTH_REDIRECTION_URL  =   "http://localhost:5000/oauthCallback";
-
 app.use(cors());
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -34,89 +27,15 @@ app.use(ExpressSession({
 }));
 
 
-
 router.get("/",function(req,res){
     res.json({"error" : false,"message" : "Hello World"});
 });
 
 
-app.use(express.static('html'));
-
-router.route("/api/test2")
-    .get(function(req,res){
-        //res.cookie('cookieName',{'email': 'jesantos0527@gmail.com', 'googleToken': 'googleToke'}, { maxAge: 900000, httpOnly: true })
-        console.log("Cookies: " + JSON.stringify(req.cookies));
-        console.log("REQ: " + JSON.stringify(req.session));
-        // res.cookie("testing", {'email': 'jesantos0527@gmail.com', 'googleToken': 'googleToke'}).send(`
-        //     <h1>Authentication using google oAuth<h1>
-        //     <a href=test.html>Login</a>
-        // `);
-        //res.cookie("remoteHealthGoogleToken", {'email': 'jesantos0527@gmail.com', 'googleToken': 'googleToke'})
-        //.cookie("remoteHealthUserEmail", 'jesantos0527@gmail.com')
-        res.redirect('/index.html');
-        //console.log("RES: "+res/*JSON.stringify(res)*/);
-        // res.send(`
-        //     <h1>Authentication using google oAuth<h1>
-        //     <a href=test.html>Login</a>
-        // `)
-        // var url = googleCalendarModel.getAuthUrl();
-        // console.log(url);
-        // res.send(`
-        //     <h1>Authentication using google oAuth<h1>
-        //     <a href=${url}>Login</a>
-        // `)
-    });
-
-router.route("/api/test")
-    // .get(function(req,res){
-    //     //res.cookie('cookieName',{'email': 'jesantos0527@gmail.com', 'googleToken': 'googleToke'}, { maxAge: 900000, httpOnly: true })
-    //     console.log("Cookies: " + JSON.stringify(req.cookies));
-    //     console.log("REQ: " + JSON.stringify(req.session));
-    //     // res.cookie("testing", {'email': 'jesantos0527@gmail.com', 'googleToken': 'googleToke'}).send(`
-    //     //     <h1>Authentication using google oAuth<h1>
-    //     //     <a href=test.html>Login</a>
-    //     // `);
-    //     res.cookie("remoteHealthGoogleToken", {'email': 'jesantos0527@gmail.com', 'googleToken': 'googleToke'})
-    //     .cookie("remoteHealthUserEmail", 'jesantos0527@gmail.com')
-    //     .redirect('/index.html');
-    //     //console.log("RES: "+res/*JSON.stringify(res)*/);
-    //     // res.send(`
-    //     //     <h1>Authentication using google oAuth<h1>
-    //     //     <a href=test.html>Login</a>
-    //     // `)
-    //     // var url = googleCalendarModel.getAuthUrl();
-    //     // console.log(url);
-    //     // res.send(`
-    //     //     <h1>Authentication using google oAuth<h1>
-    //     //     <a href=${url}>Login</a>
-    //     // `)
-    // })
-    .post(function(req,res){
-        var response = res;
-        //console.log("Post Body: " + JSON.stringify(req.body));
-        var body = req.body;
-        body.google_calendar_token = req.cookies.remoteHealthGoogleToken;
-
-        // console.log("Post Cookies Token: " + JSON.stringify(req.cookies.remoteHealthGoogleToken));
-        // console.log("Post Cookies Email: " + JSON.stringify(req.cookies.remoteHealthUserEmail));
-        // console.log("Body: " + JSON.stringify(body));
-        res.clearCookie('remoteHealthGoogleToken');
-        res.status(201).json({ message: 'User created!' });
-        //var db = new usersModel();
-        // var response = res;
-        // // fetch email and password from REST request.
-        // // Add strict validation when you use this in Production.
-        
-        // db.userEmail = req.body.email; 
-        // // Hash the password using SHA1 algorithm.
-        // db.userPassword =  require('crypto')
-        //                   .createHash('sha1')
-        //                   .update(req.body.password)
-        //                   .digest('base64');
-    });
+//app.use(express.static('html'));
 
 ////////////////////////////////////////////////////////////////
-/// Authentication TEST
+/// Authentication
 ////////////////////////////////////////////////////////////////
 
 router.route("/authenticate")
@@ -136,9 +55,6 @@ router.route("/authenticate/oauthCallback")
             if (err){
                 res.send(`<h3>Login failed!!</h3>;`);
             }else{
-                // res.cookie("remoteHealthGoogleToken", info.google_calendar_token, {domain : "localhost"})
-                //    .cookie("remoteHealthUserEmail", info.email_id, {domain : "localhost"})
-                //    .redirect('http://localhost:5000/register.html');
                 var redirectURL = urlModule.format({
                     pathname: "http://ec2-34-205-171-38.compute-1.amazonaws.com:5000/landingpage.html",
                     query: {
@@ -152,60 +68,6 @@ router.route("/authenticate/oauthCallback")
 });
 
 
-
-
-////////////////////////////////////////////////////////////////
-/// Authentication
-////////////////////////////////////////////////////////////////
-
-router.route("/api/authenticate")
-    .get(function(req,res){
-        googleCalendarModel.getAuthUrl(req,function(url, err){
-            if (err){
-                //console.log('before 500');
-                res.status(500).send(err.message);
-            }
-            // else if(users == undefined || users == null ){
-            //     res.status(404).json({ message: 'User not found' })
-            // }
-            else{
-                res.send(`
-                    <h1>Authentication using google oAuth<h1>
-                    <a href=${url}>Login</a>
-                `)
-            }
-        });
-        // var url = googleCalendarModel.getAuthUrl();
-        // console.log(url);
-        // res.send(`
-        //     <h1>Authentication using google oAuth<h1>
-        //     <a href=${url}>Login</a>
-        // `)
-});
-
-router.route("/api/authenticate/oauthCallback")
-    .get(function(req,res){
-        googleCalendarModel.handleOauthCallback(req,function(err, user){
-            if (err){
-                //console.log('before 500');
-                //res.status(500).send(err.message);
-                res.send(`<h3>Login failed!!</h3>;`);
-            }
-            // else if(users == undefined || users == null ){
-            //     res.status(404).json({ message: 'User not found' })
-            // }
-            else{
-                res.send('<h1>auth successful</h1>');
-            }
-        });
-        // var url = googleCalendarModel.getAuthUrl();
-        // console.log(url);
-        // res.send(`
-        //     <h1>Authentication using google oAuth<h1>
-        //     <a href=${url}>Login</a>
-        // `)
-});
-
 ////////////////////////////////////////////////////////////////
 /// Prediction
 ////////////////////////////////////////////////////////////////
@@ -214,13 +76,8 @@ router.route("/api/prediction")
     .get(function(req,res){
         predictionModel.predictDisease(req,function(err,disease){
             if (err){
-                //console.log('before 500');
                 res.status(500).send(err.message);
-            }
-            // else if(users == undefined || users == null ){
-            //     res.status(404).json({ message: 'User not found' })
-            // }
-            else{
+            }else{
                 res.status(200).json(disease);
             }
         });
@@ -342,9 +199,6 @@ router.route("/api/appointments")
             if (err){
                 res.status(500).send(err.message);
             }
-            // else if(user == undefined || user == null  ){
-            //     res.status(404).json({ message: 'User not found' });
-            // }
             else{
                 res.status(201).json({ message: 'Appointment added!' });
             }
@@ -491,12 +345,6 @@ router.route("/api/appointments/doctor/:user_id/today")
             }
         });
     });
-////////////////////////////////////////////////////////////////
-/// 
-////////////////////////////////////////////////////////////////
-
-
-
 
 router.route("/api/users/:user_id/appointments")
     .post(function(req,res){
@@ -579,73 +427,6 @@ router.route("/api/users/:user_id/patients")
             }
         });
     });
-
-// router.route("/api/diseases")
-//     .post(function(req,res){
-//         diseasesModel.createDisease(req, function (err){
-//             if(err){
-//                 res.status(500).send(err.message);
-//             }
-//             else{
-//                 res.status(201).json({ message: 'Disease created!' });
-//             }
-//         });
-//     })
-//     .get(function(req,res){
-//         var query = {
-//             name : req.query.name,
-//             symptom : req.query.symptom
-//         };
-//         diseasesModel.getDiseases(query,function(err,diseases){
-//             if (err){
-//                 res.status(500).send(err.message);
-//             }
-//             else if(diseases == undefined || diseases == null ){
-//                 res.status(404).json({ message: 'Disease not found' })
-//             }
-//             else{
-//                 res.status(200).json(diseases);
-//             }
-//         });
-//     });
-
-// router.route("/api/diseases/:disease_id")
-//     .get(function(req,res){
-//         diseasesModel.getDisease({_id : req.params.disease_id},function(err,disease){
-//             if (err){
-//                 res.status(500).send(err.message);
-//             }
-//             else if(disease == undefined || disease == null || disease == []){
-//                 res.status(404).json({ message: 'Disease not found' })
-//             }
-//             else{
-//                 res.status(200).json(disease);
-//             }
-//         });
-//     })
-
-//     .put(function(req, res) {
-//         diseasesModel.updateDisease({_id : req.params.disease_id},req.body,function(err,disease){
-//             if (err){
-//                 res.status(500).send(err.message);
-//             }
-//             else if(disease == undefined || disease == null  ){
-//                 res.status(404).json({ message: 'Disease not found' });
-//             }
-//             else{
-//                 res.status(204).send();
-//             }
-//         });
-//     })
-
-//     .delete(function(req, res) {
-//         diseasesModel.deleteDisease(req,function(err){
-//             if (err)
-//                 res.status(500).send(err.message);
-//             else
-//                 res.status(200).json({ message: 'Disease deleted' });
-//         });
-//     });
 
 
 app.use('/',router);
