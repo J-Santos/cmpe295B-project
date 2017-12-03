@@ -272,18 +272,6 @@ router.route("/api/appointments/:appointment_id/:user_id/approve")
                 res.status(204).send();
             }
         });
-
-        appointmentsModel.updateAppointment({_id : req.params.appointment_id},req.body,function(err,appointment){
-            if (err){
-                res.status(500).send(err.message);
-            }
-            else if(appointment == undefined || appointment == null  ){
-                res.status(404).json({ message: 'Appointment not found' });
-            }
-            else{
-                res.status(204).send();
-            }
-        });
     });
 
 router.route("/api/appointments/patient/:user_id")
