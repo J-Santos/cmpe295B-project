@@ -49,14 +49,24 @@ exports.handleGoogleOauthCallback = function(req, callback){
                 userGoogleProfile = response;    
                 var emailID = userGoogleProfile.emails[0].value;
                 var query = {"_id" : emailID};
-                var conditions = {'google_calendar_token' : tokens};
+                //var conditions = {'google_calendar_token' : tokens};
 
                 var responseJson = {
                     "email_id" : emailID,
                     "google_calendar_token" : tokens
                 };
-                console.log(tokens);
-                callback(null, responseJson);
+                //console.log(tokens);
+                usersModel.getUser(query,function(err,user){
+                    if (err){
+                        callback(err, null)
+                    }else if(user == undefined || user == null){
+                        callback(null, responseJson);
+                    }
+                    else{
+                        callback(new Error("User already exists."), null);
+                    }
+                });
+                //callback(null, responseJson);
                 //updateUserCalendarToken(query, conditions, callback)
             });
         }else{
@@ -229,7 +239,7 @@ function deleteEventFromGoogleCalendar(appointment, tokens, callback){
 ///////////////////////////////////////
 /// Temp to Update Google Token
 ///////////////////////////////////////
-
+//const AUTH_TEMP_URL = "http://localhost:5000/api/authenticate/oauthCallback";
 const AUTH_TEMP_URL = "https://remote-health-api.herokuapp.com/api/authenticate/oauthCallback";
 
 function getOAuthClient2 () {
@@ -256,6 +266,16 @@ exports.handleOauthCallback = function(req, callback){
                 var emailID = userGoogleProfile.emails[0].value;
                 var query = {"_id" : emailID};
                 var conditions = {'google_calendar_token' : tokens};
+                // usersModel.getUser(query,function(err,user){
+                //     if (err){
+                //         callback(err, null)
+                //     }else if(user == undefined || user == null){
+                //         callback(null, user)
+                //     }
+                //     else{
+                //         callback(new Error("User already exists."), null);
+                //     }
+                // });
                 updateUserCalendarToken(query, conditions, callback)
             });
         }else{

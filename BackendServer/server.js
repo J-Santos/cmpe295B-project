@@ -66,7 +66,9 @@ router.route("/api/authenticate")
 router.route("/api/authenticate/oauthCallback")
     .get(function(req,res){
         googleCalendarModel.handleOauthCallback(req,function(err, user){
+            console.log(JSON.stringify(user));
             if (err){
+                console.log(err);
                 //console.log('before 500');
                 //res.status(500).send(err.message);
                 res.send(`<h3>Login failed!!</h3>;`);
@@ -105,7 +107,7 @@ router.route("/authenticate/oauthCallback")
     .get(function(req,res){
         googleCalendarModel.handleGoogleOauthCallback(req,function(err, info){
             if (err){
-                res.send(`<h3>Login failed!!</h3>;`);
+                res.redirect("http://ec2-34-205-171-38.compute-1.amazonaws.com:5000/error.html");
             }else{
                 var redirectURL = urlModule.format({
                     pathname: "http://ec2-34-205-171-38.compute-1.amazonaws.com:5000/landingpage.html",
