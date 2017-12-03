@@ -92,7 +92,7 @@ router.route("/api/authenticate/oauthCallback")
 
 router.route("/authenticate")
     .get(function(req,res){
-        googleCalendarModel.getAuthUrl(req,function(url, err){
+        googleCalendarModel.getAuthUrl2(req,function(url, err){
             if (err){
                 res.status(500).send(err.message);
             }else{

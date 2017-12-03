@@ -263,3 +263,20 @@ exports.handleOauthCallback = function(req, callback){
         }
     });
 }
+
+exports.getAuthUrl2 = function(req, callback){
+    var oauth2Client = getOAuthClient2();
+    //console.log("OAUTH: " + oauth2Client);
+    var scopes = [
+        'https://www.googleapis.com/auth/userinfo.email',
+        'https://www.googleapis.com/auth/plus.me',
+        'https://www.googleapis.com/auth/calendar'
+    ];
+    var url = oauth2Client.generateAuthUrl({
+        access_type: 'offline',
+        scope: scopes
+    });
+
+    //console.log("Generated URL: " + url);
+    callback(url, null);
+}
