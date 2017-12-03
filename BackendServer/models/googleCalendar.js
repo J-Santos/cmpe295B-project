@@ -7,7 +7,7 @@ var OAUTH2            		=   google.auth.OAuth2;
 const GOOBLE_CLIENT_ID      =   "310398537432-4ctsbrma6krd85bsgdvbv6h4vttbt9hs.apps.googleusercontent.com";
 const GOOGLE_CLIENT_SECRET  =   "A8s3j6VY8zuQ1atA5-VwgEcL";
 //const AUTH_REDIRECTION_URL  =   "http://localhost:5000/authenticate/oauthCallback";
-const AUTH_REDIRECTION_URL  =   "https://remote-health-api.herokuapp.com/api/authenticate/oauthCallback";
+const AUTH_REDIRECTION_URL  =   "https://remote-health-api.herokuapp.com/authenticate/oauthCallback";
 
 function getOAuthClient () {
     return new OAUTH2(GOOBLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, AUTH_REDIRECTION_URL);
@@ -63,34 +63,6 @@ exports.handleGoogleOauthCallback = function(req, callback){
             callback(err,null);
         }
     });
-}
-
-exports.handleOauthCallback = function(req, callback){
-	var oauth2Client = getOAuthClient();
-	var code = req.query.code;
-	//console.log("OauthCallback Code: " + code);
-	var userProfile;
-
-	oauth2Client.getToken(code, function(err, tokens) {
-    	//console.log("OAuth Tokens: " + tokens);
-    	if(!err) {
-        	oauth2Client.setCredentials(tokens);
-        	var userGoogleProfile;
-        	var plus = google.plus('v1');
-        	plus.people.get({
-        		userId: 'me',
-        		auth: oauth2Client
-        	}, function (err, response) {
-         		userGoogleProfile = response;    
-        		var emailID = userGoogleProfile.emails[0].value;
-          		var query = {"_id" : emailID};
-          		var conditions = {'google_calendar_token' : tokens};
-          		updateUserCalendarToken(query, conditions, callback)
-     		});
-    	}else{
-    		callback(err,null);
-    	}
-  	});
 }
 
 function updateUserCalendarToken(query, conditions, callback){
@@ -254,3 +226,40 @@ function deleteEventFromGoogleCalendar(appointment, tokens, callback){
 }
 
 
+///////////////////////////////////////
+/// Temp to Update Google Token
+///////////////////////////////////////
+
+const AUTH_TEMP_URL = "https://remote-health-api.herokuapp.com/api/authenticate/oauthCallback";
+
+function getOAuthClient2 () {
+    return new OAUTH2(GOOBLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, AUTH_TEMP_URL);
+}
+
+exports.handleOauthCallback = function(req, callback){
+    var oauth2Client = getOAuthClient2();
+    var code = req.query.code;
+    //console.log("OauthCallback Code: " + code);
+    var userProfile;
+
+    oauth2Client.getToken(code, function(err, tokens) {
+        //console.log("OAuth Tokens: " + tokens);
+        if(!err) {
+            oauth2Client.setCredentials(tokens);
+            var userGoogleProfile;
+            var plus = google.plus('v1');
+            plus.people.get({
+                userId: 'me',
+                auth: oauth2Client
+            }, function (err, response) {
+                userGoogleProfile = response;    
+                var emailID = userGoogleProfile.emails[0].value;
+                var query = {"_id" : emailID};
+                var conditions = {'google_calendar_token' : tokens};
+                updateUserCalendarToken(query, conditions, callback)
+            });
+        }else{
+            callback(err,null);
+        }
+    });
+}
