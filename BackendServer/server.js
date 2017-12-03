@@ -35,6 +35,58 @@ router.get("/",function(req,res){
 //app.use(express.static('html'));
 
 ////////////////////////////////////////////////////////////////
+/// TEMP Authentication
+////////////////////////////////////////////////////////////////
+
+router.route("/api/authenticate")
+    .get(function(req,res){
+        googleCalendarModel.getAuthUrl(req,function(url, err){
+            if (err){
+                //console.log('before 500');
+                res.status(500).send(err.message);
+            }
+            // else if(users == undefined || users == null ){
+            //     res.status(404).json({ message: 'User not found' })
+            // }
+            else{
+                res.send(`
+                    <h1>Authentication using google oAuth<h1>
+                    <a href=${url}>Login</a>
+                `)
+            }
+        });
+        // var url = googleCalendarModel.getAuthUrl();
+        // console.log(url);
+        // res.send(`
+        //     <h1>Authentication using google oAuth<h1>
+        //     <a href=${url}>Login</a>
+        // `)
+});
+
+router.route("/api/authenticate/oauthCallback")
+    .get(function(req,res){
+        googleCalendarModel.handleOauthCallback(req,function(err, user){
+            if (err){
+                //console.log('before 500');
+                //res.status(500).send(err.message);
+                res.send(`<h3>Login failed!!</h3>;`);
+            }
+            // else if(users == undefined || users == null ){
+            //     res.status(404).json({ message: 'User not found' })
+            // }
+            else{
+                res.send('<h1>auth successful</h1>');
+            }
+        });
+        // var url = googleCalendarModel.getAuthUrl();
+        // console.log(url);
+        // res.send(`
+        //     <h1>Authentication using google oAuth<h1>
+        //     <a href=${url}>Login</a>
+        // `)
+});
+
+////////////////////////////////////////////////////////////////
 /// Authentication
 ////////////////////////////////////////////////////////////////
 
