@@ -40,7 +40,7 @@ router.get("/",function(req,res){
 
 router.route("/api/authenticate")
     .get(function(req,res){
-        googleCalendarModel.getAuthUrl(req,function(url, err){
+        googleCalendarModel.getAuthUrl2(req,function(url, err){
             if (err){
                 //console.log('before 500');
                 res.status(500).send(err.message);
@@ -92,7 +92,7 @@ router.route("/api/authenticate/oauthCallback")
 
 router.route("/authenticate")
     .get(function(req,res){
-        googleCalendarModel.getAuthUrl2(req,function(url, err){
+        googleCalendarModel.getAuthUrl(req,function(url, err){
             if (err){
                 res.status(500).send(err.message);
             }else{
