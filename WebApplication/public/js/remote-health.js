@@ -8,7 +8,7 @@ function generateGoogleOauthUrl(){
 	    	document.getElementById("googlesubmit").href = res.authUrl;
 	    }
   	};
-  	xhttp.open("GET", "/authenticate", true);
+  	xhttp.open("GET", "https://remote-health-api.herokuapp.com/authenticate", true);
   	xhttp.send();
 }
 
@@ -80,11 +80,6 @@ function autopopulate_email(){
 }
 
 $(document).ready(function(){
-	$.get( "https://remote-health-api.herokuapp.com/api/users/sharat.hegde@sjsu.edu/abc/login", function( data ) {
-  		console.log(data);
-	}).fail(function(res){
-		console.log(res);
-	});
 	populateUserFromCookie();
 	if(document.getElementById("googlesubmit")){
 		generateGoogleOauthUrl();
