@@ -25,7 +25,7 @@ public class UberActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_uber);
 
-        if(getActionBar() != null) {
+        if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
@@ -49,13 +49,6 @@ public class UberActivity extends AppCompatActivity {
                 .setDropoffLocation(37.795079, -122.4397805, "Embarcadero", "One Embarcadero Center, San Francisco")
                 .build();
         rideRequestButton.setRideParameters(rideParams);
-
-
-
-
-
-
-
     }
 
     private void uberConfig() {

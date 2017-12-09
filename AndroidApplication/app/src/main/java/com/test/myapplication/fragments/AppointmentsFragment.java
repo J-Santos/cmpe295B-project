@@ -31,8 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by NehaRege on 10/26/17.
  */
-public class AppointmentsFragment extends Fragment
-        implements CustomRvAdapter.OnRecyclerViewItemClickListener {
+public class AppointmentsFragment extends Fragment implements CustomRvAdapter.OnRecyclerViewItemClickListener {
 
     public static final String KEY_ARG_PAGE = "KEY_ARG_PAGE";
     public static final String KEY_APP_TYPE = "KEY_APP_TYPE";
@@ -77,10 +76,8 @@ public class AppointmentsFragment extends Fragment
 
         getSharedPrefs();
 
-
         page = getArguments().getInt(KEY_ARG_PAGE);
         appType = getArguments().getString(KEY_APP_TYPE);
-//        currentUserEmail = getArguments().getString(KEY_EMAIL);
 
         dataListAppointment = new ArrayList<>();
     }
@@ -166,8 +163,8 @@ public class AppointmentsFragment extends Fragment
                         for (int i = 0; i < response.body().size(); i++) {
                             if ((response.body().get(i).getStatus()).equals("approved")) {
                                 dataListAppointment.add(response.body().get(i));
-                                Log.d(TAG, "onResponse: approved data = "+dataListAppointment.get(0).getPurpose());
-                                Log.d(TAG, "onResponse: approved data link = "+dataListAppointment.get(0).getGoogleEventLink());
+                                Log.d(TAG, "onResponse: approved data = " + dataListAppointment.get(0).getPurpose());
+                                Log.d(TAG, "onResponse: approved data link = " + dataListAppointment.get(0).getGoogleEventLink());
                                 rvAdapter.notifyDataSetChanged();
 
                             }
@@ -179,7 +176,7 @@ public class AppointmentsFragment extends Fragment
                         for (int i = 0; i < response.body().size(); i++) {
                             if ((response.body().get(i).getStatus()).equals("pending")) {
                                 dataListAppointment.add(response.body().get(i));
-                                Log.d(TAG, "onResponse: pending data = "+dataListAppointment.get(0).getPurpose());
+                                Log.d(TAG, "onResponse: pending data = " + dataListAppointment.get(0).getPurpose());
 
                                 rvAdapter.notifyDataSetChanged();
 
@@ -201,6 +198,7 @@ public class AppointmentsFragment extends Fragment
                     e.printStackTrace();
                 }
             }
+
             @Override
             public void onFailure(Call<ArrayList<Appointment>> call, Throwable t) {
                 t.printStackTrace();

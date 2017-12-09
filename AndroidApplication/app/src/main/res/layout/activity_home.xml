@@ -22,15 +22,4 @@
         app:headerLayout="@layout/nav_header_home"
         app:menu="@menu/activity_home_drawer" />
 
-    <!--<android.support.design.widget.NavigationView-->
-    <!--android:id="@+id/navigation_view"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_gravity="start"-->
-    <!--app:headerLayout="@layout/navigation_drawer_header"-->
-    <!--app:menu="@menu/menu_drawer"-->
-    <!--android:background="@color/color_navigation_list_background"-->
-    <!--app:itemIconTint="@color/color_selector_navigation_item"-->
-    <!--app:itemTextColor="@color/color_selector_navigation_item"/>-->
-
 </android.support.v4.widget.DrawerLayout>

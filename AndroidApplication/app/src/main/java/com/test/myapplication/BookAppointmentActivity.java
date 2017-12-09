@@ -50,9 +50,6 @@ public class BookAppointmentActivity extends AppCompatActivity implements View.O
 
     private EditText editTextDoctorName;
     private EditText editTextDoctorEmail;
-    //    private EditText editTextDate;
-    //    private EditText editTextStartTime;
-//    private EditText editTextEndTime;
     private EditText editTextPurpose;
     private EditText editTextLocation;
 
@@ -61,7 +58,6 @@ public class BookAppointmentActivity extends AppCompatActivity implements View.O
     private String doctorId;
     private String doctorName;
     private String purpose;
-    //    private String date;
     private String simpleDateFormatDate;
     private String startTime;
     private String endTime;
@@ -78,20 +74,10 @@ public class BookAppointmentActivity extends AppCompatActivity implements View.O
 
     private TextView buttonDate;
 
-//    private TextView textViewStartTime;
-//    private TextView textViewEndTime;
-
-
-//    private Spinner spinnerHr;
-//    private Spinner spinnerMin;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_appointment);
-
-//        Intent intent = getIntent();
-//        patientId = intent.getStringExtra("book_app_email_id");
 
         Log.d(TAG, "onCreate: ");
 
@@ -108,15 +94,9 @@ public class BookAppointmentActivity extends AppCompatActivity implements View.O
         switch (view.getId()) {
             case R.id.appointment_activity_submit:
 
-                Toast.makeText(getApplicationContext(), "Button clicked: start time is: " + startTime, Toast.LENGTH_SHORT).show();
-                Toast.makeText(getApplicationContext(), "Button clicked: end time is: " + endTime, Toast.LENGTH_SHORT).show();
-
                 getAppointmentInfoFromEditText();
 
                 createNewAppointmentObj();
-
-                Log.d(TAG, "onClick: making post req");
-
 
                 postReq();
 
@@ -129,28 +109,12 @@ public class BookAppointmentActivity extends AppCompatActivity implements View.O
                 showDatePickerDialog(view);
 
                 break;
-
-//            case R.id.appointment_activity_start_time:
-//                Log.d(TAG, "onClick: start");
-//
-//
-//                showTimePickerDialog(view);
-//
-//                break;
-//
-//            case R.id.appointment_activity_end_time:
-//                Log.d(TAG, "onClick: end");
-//
-//                showTimePickerDialog(view);
-//
-//                break;
         }
     }
 
     public void showTimePickerDialog(View v) {
         Log.d(TAG, "showTimePickerDialog: ");
         DialogFragment newFragment = new TimePickerFragment();
-
         newFragment.show(getFragmentManager(), "timePicker");
     }
 
@@ -164,8 +128,8 @@ public class BookAppointmentActivity extends AppCompatActivity implements View.O
         currentUserEmail = prefs.getString(getString(R.string.shared_pref_gmail), null);
         currentUserName = prefs.getString(getString(R.string.shared_pref_gmail_name), null);
 
-        Log.d(TAG, "getSharedPrefs: name = "+currentUserName);
-        Log.d(TAG, "getSharedPrefs: email = "+currentUserEmail);
+        Log.d(TAG, "getSharedPrefs: name = " + currentUserName);
+        Log.d(TAG, "getSharedPrefs: email = " + currentUserEmail);
 
 
     }
@@ -173,11 +137,8 @@ public class BookAppointmentActivity extends AppCompatActivity implements View.O
     private void initializeViews() {
         editTextDoctorName = (EditText) findViewById(R.id.appointment_activity_doctor_name);
         editTextDoctorEmail = (EditText) findViewById(R.id.appointment_activity_doctor_email);
-//        editTextStartTime = (EditText) findViewById(R.id.appointment_activity_start_time);
-//        editTextEndTime = (EditText) findViewById(R.id.appointment_activity_end_time);
         editTextLocation = (EditText) findViewById(R.id.appointment_activity_location);
         editTextPurpose = (EditText) findViewById(R.id.appointment_activity_reason);
-//        editTextDate = (EditText) findViewById(R.id.appointment_activity_date);
 
         buttonDate = (TextView) findViewById(R.id.appointment_activity_date_button);
 
@@ -185,10 +146,6 @@ public class BookAppointmentActivity extends AppCompatActivity implements View.O
         timePickerEndTime = (TimePicker) findViewById(R.id.appointment_activity_end_time_picker);
         timePickerStartTime.setIs24HourView(true);
         timePickerEndTime.setIs24HourView(true);
-
-
-//        textViewStartTime = (TextView) findViewById(R.id.appointment_activity_start_time);
-//        textViewEndTime = (TextView) findViewById(R.id.appointment_activity_end_time);
 
         timePickerStartTime.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
@@ -221,17 +178,11 @@ public class BookAppointmentActivity extends AppCompatActivity implements View.O
     private void getAppointmentInfoFromEditText() {
         doctorName = editTextDoctorName.getText().toString().trim();
         doctorId = editTextDoctorEmail.getText().toString().trim();
-//        startTime = editTextStartTime.getText().toString();
-//        endTime = editTextEndTime.getText().toString();
         location = editTextLocation.getText().toString().trim();
         purpose = editTextPurpose.getText().toString().trim();
-//        date = editTextDate.getText().toString();
         status = "pending";
-
         patientId = currentUserEmail;
-//        patientName = currentUserName.trim();
-        patientName = "Neha Rege";
-//        patientId = "neharege28@gmail.com";
+        patientName = currentUserName.trim();
     }
 
     private void createNewAppointmentObj() {
@@ -247,18 +198,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements View.O
         newAppointment.setPatientName(patientName);
         newAppointment.setStatus(status);
 
-//        newAppointment.setDate("2017-11-10");
-//        newAppointment.setDoctorId("jesantos0527@gmail.com");
-//        newAppointment.setDoctorName("John Kim");
-//        newAppointment.setEndTime("12:00");
-//        newAppointment.setLocation("San Francisco");
-//        newAppointment.setPurpose("Full body checkup");
-//        newAppointment.setStartTime("11:00");
-//        newAppointment.setPatientId("neharege28@gmail.com");
-//        newAppointment.setStatus("approved");
-
         Log.d(TAG, "createNewAppointmentObj: obj = " + newAppointment.toString());
-
     }
 
     private void postReq() {
@@ -272,9 +212,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements View.O
                 public void onResponse(Call<BookAppointment> call,
                                        Response<BookAppointment> response) {
                     try {
-                        Log.d(TAG, "*********************** onResponse: Post Appointment Success *******************");
-
-                        Toast.makeText(BookAppointmentActivity.this, "Appointment added successfully! ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(BookAppointmentActivity.this, "Success!", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "onResponse: purpose = " + response.message());
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -295,11 +233,8 @@ public class BookAppointmentActivity extends AppCompatActivity implements View.O
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
-//        simpleDateFormatDate = String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day);
-//        buttonDate.setText(simpleDateFormatDate);
         Calendar cal = new GregorianCalendar(year, month, day);
         setDate(cal);
-
     }
 
     private void setDate(final Calendar calendar) {
@@ -316,22 +251,4 @@ public class BookAppointmentActivity extends AppCompatActivity implements View.O
         buttonDate.setText(date);
 
     }
-
-//    @Override
-//    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-//
-//        Log.d(TAG, "onTimeSet: ");
-//        Log.d(TAG, "onTimeSet: start id = " + R.id.appointment_activity_start_time);
-//        if (view.getId() == R.id.appointment_activity_start_time) {
-//            Log.d(TAG, "onTimeSet: start");
-//            startTime = String.valueOf(hourOfDay) + ":" + String.valueOf(minute);
-//            Log.d(TAG, "onTimeSet: start = " + startTime);
-//            textViewStartTime.setText(startTime);
-//        } else if (view.getId() == R.id.appointment_activity_end_time) {
-//            Log.d(TAG, "onTimeSet: end");
-//            endTime = String.valueOf(hourOfDay) + ":" + String.valueOf(minute);
-//            Log.d(TAG, "onTimeSet: end = " + endTime);
-//            textViewEndTime.setText(endTime);
-//        }
-//    }
 }

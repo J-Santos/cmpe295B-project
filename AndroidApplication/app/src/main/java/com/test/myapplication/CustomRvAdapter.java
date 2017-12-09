@@ -45,11 +45,10 @@ public class CustomRvAdapter extends RecyclerView.Adapter<CustomRvAdapter.Sample
 
         if (inComingData != null) {
             this.data = inComingData;
-            Log.d(TAG, "CustomRvAdapter: data not null = "+inComingData.size());
+            Log.d(TAG, "CustomRvAdapter: data not null = " + inComingData.size());
         } else {
             Log.d(TAG, "CustomRvAdapter: data null");
             this.data = new ArrayList<>();
-            Log.d(TAG, "CustomRvAdapter: data = " + data.get(0).getPurpose());
         }
     }
 
@@ -78,7 +77,6 @@ public class CustomRvAdapter extends RecyclerView.Adapter<CustomRvAdapter.Sample
 
         imageView.setImageResource(R.drawable.ic_menu_calendar);
         textViewPurpose.setText(dataItem.getPurpose());
-//        textViewLocation.setText(dataItem.getLocation());
         textViewLocation.setText("");
 
         String googleEventLink = dataItem.getGoogleEventLink();
@@ -90,7 +88,6 @@ public class CustomRvAdapter extends RecyclerView.Adapter<CustomRvAdapter.Sample
         } else {
             Log.d(TAG, "onBindViewHolder: google event link = null ");
 
-//            textViewClickMe.setTextColor(Color.parseColor("#c67100"));
             textViewClickMe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -104,11 +101,8 @@ public class CustomRvAdapter extends RecyclerView.Adapter<CustomRvAdapter.Sample
                         final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
                         dateFormat.format(Calendar.getInstance().getTime());
                         appDate = dateFormat.format(date);
-                        Log.d(TAG, "onClick: -------------------------");
-                        Log.d(TAG, "onClick: date = " + appDate);
 
                     } catch (ParseException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
 
@@ -121,25 +115,10 @@ public class CustomRvAdapter extends RecyclerView.Adapter<CustomRvAdapter.Sample
                         Date date = formatTime.parse(timeStart.replaceAll("Z$", "+0000"));
                         DateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
                         appTime = timeFormatter.format(date);
-                        Log.d(TAG, "onClick: -------------------------");
-                        Log.d(TAG, "onClick: time = " + appTime);
 
                     } catch (ParseException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
-
-
-//                    final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
-//
-//                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//
-//                    String simpleDateFormatDate = simpleDateFormat.format(calendar.getTime());
-//
-//                    dateFormat.format(calendar.getTime());
-//                    String date = dateFormat.format(calendar.getTime());
-//
-//                    buttonDate.setText(date);
 
                     showAppointmentDetailsDialog(
                             dataItem.getPurpose(),
@@ -158,34 +137,6 @@ public class CustomRvAdapter extends RecyclerView.Adapter<CustomRvAdapter.Sample
     }
 
     private void showAppointmentDetailsDialog(String title, String name, String email, String date, String time, String location) {
-
-//        Log.d(TAG, "showAppointmentDetailsDialog: ");
-//
-//        LayoutInflater inflater = LayoutInflater.from(appContext);
-//        View dialogLayout = inflater.inflate(R.layout.custom_dialog_list_view, null);
-//        final AlertDialog.Builder builder = new AlertDialog.Builder(appContext);
-//        builder.setView(dialogLayout);
-//        builder.setTitle(title);
-//
-//        TextView textViewDoctorName = (TextView) dialogLayout.findViewById(R.id.dialog_doctor_name);
-//        TextView textViewDoctorEmail = (TextView) dialogLayout.findViewById(R.id.dialog_doctor_email);
-//        TextView textViewDate = (TextView) dialogLayout.findViewById(R.id.dialog_appointment_date);
-//        TextView textViewTime = (TextView) dialogLayout.findViewById(R.id.dialog_app_time);
-//        TextView textViewLocation = (TextView) dialogLayout.findViewById(R.id.dialog_app_location);
-//
-//        textViewDoctorName.setText(name);
-//        textViewDoctorEmail.setText(email);
-//        textViewDate.setText(date);
-//        textViewTime.setText(time);
-//        textViewLocation.setText(location);
-//
-//        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//                dialogInterface.dismiss();
-//            }
-//        });
-
 
         final Dialog dialog = new Dialog(appContext);
         dialog.setContentView(R.layout.custom_dialog_list_view);
@@ -245,12 +196,7 @@ public class CustomRvAdapter extends RecyclerView.Adapter<CustomRvAdapter.Sample
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    /**
-                     * Whenever the custom item layout is clicked, we pass the layout and position
-                     * to whoever implemented the OnRecyclerViewItemClickListener ( i.e our Activity )
-                     *
-                     * Note: getLayoutPosition() returns the list item position in the RecyclerView
-                     */
+
                     onItemClickListener.onItemClick(getLayoutPosition());
                 }
             });

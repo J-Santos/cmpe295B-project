@@ -24,6 +24,9 @@
     <string name="shared_pref_gmail_name_first">shared_pref_gmail_name_first</string>
     <string name="shared_pref_gmail_name">shared_pref_gmail_name</string>
     <string name="shared_pref_gmail_name_last">shared_pref_gmail_name_last</string>
+    <string name="loginType_fb">fb</string>
+    <string name="loginType_gmail">gmail</string>
+    <string name="loginType_loginButton">loginButton</string>
 
     <string-array name="time_array_hours">
         <item>00</item>

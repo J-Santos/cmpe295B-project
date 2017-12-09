@@ -39,13 +39,8 @@ public class PredictionsActivity extends AppCompatActivity implements View.OnCli
 
     private EditText editTextSym1;
     private EditText editTextSym2;
-    private EditText editTextSym3;
 
     private Button buttonSubmit;
-
-    private String sym1;
-    private String sym2;
-    private String sym3;
 
     private ApiService service;
 
@@ -56,13 +51,9 @@ public class PredictionsActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_predictions);
 
-        Log.d(TAG, "onCreate: ");
-
         initializeViews();
 
-
         getSharedPrefs();
-
 
         initializeRetrofit();
 
@@ -72,7 +63,6 @@ public class PredictionsActivity extends AppCompatActivity implements View.OnCli
         Log.d(TAG, "initializeViews: ");
         editTextSym1 = (EditText) findViewById(R.id.predictions_activity_symp1);
         editTextSym2 = (EditText) findViewById(R.id.predictions_activity_symp2);
-//        editTextSym3 = (EditText) findViewById(R.id.predictions_activity_symp3);
 
         buttonSubmit = (Button) findViewById(R.id.predictions_activity_submit);
         buttonSubmit.setOnClickListener(this);
@@ -84,28 +74,22 @@ public class PredictionsActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onClick(View view) {
-
         switch (view.getId()) {
             case R.id.predictions_activity_submit:
-                Log.d(TAG, "onClick: submit predictions");
+
                 spinner.setVisibility(View.VISIBLE);
 
-
-                getPredictions("neharege28@gmail.com", getDataFromEditText());
-//                openBottomDialog();
-
-//                getPredictions("weight loss,tired", "jesantos0527@gmail.com");
+                getPredictions(currentUserEmail, getDataFromEditText());
 
                 break;
         }
-
     }
 
     private String getDataFromEditText() {
         String sym1 = editTextSym1.getText().toString().trim().toLowerCase();
         String sym2 = editTextSym2.getText().toString().trim().toLowerCase();
 
-        return sym1+","+sym2;
+        return sym1 + "," + sym2;
 
     }
 
@@ -115,9 +99,7 @@ public class PredictionsActivity extends AppCompatActivity implements View.OnCli
                 .setContent(diseaseDescription)
                 .setPositiveText("OK")
                 .setPositiveBackgroundColorResource(R.color.colorPrimary)
-                //.setPositiveBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary)
                 .setPositiveTextColorResource(android.R.color.white)
-                //.setPositiveTextColor(ContextCompat.getColor(this, android.R.color.colorPrimary)
                 .onPositive(new BottomDialog.ButtonCallback() {
                     @Override
                     public void onClick(BottomDialog dialog) {
@@ -135,14 +117,6 @@ public class PredictionsActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-//    private OkHttpClient getClient() {
-//        OkHttpClient client = new OkHttpClient.Builder()
-//                .connectTimeout(5, TimeUnit.MINUTES)
-//                .readTimeout(5, TimeUnit.MINUTES)
-//                .build();
-//        return client;
-//    }
-
     private void initializeRetrofit() {
 
         OkHttpClient client = new OkHttpClient.Builder()
@@ -159,10 +133,6 @@ public class PredictionsActivity extends AppCompatActivity implements View.OnCli
         service = retrofit.create(ApiService.class);
     }
 
-    /*
-        https://remote-health-api.herokuapp.com/api/prediction?symptoms=weight%20loss,tired&email=jesantos0527@gmail.com
-     */
-
     private void getPredictions(String emailId, String symptoms) {
         Log.d(TAG, "getPredictions: method");
 
@@ -173,7 +143,6 @@ public class PredictionsActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onResponse(Call<Predictions> call, Response<Predictions> response) {
                 try {
-                    Log.d(TAG, "onResponse: ");
                     if (response == null) {
                         Log.d(TAG, "onResponse: response = null");
                     } else {
@@ -183,8 +152,6 @@ public class PredictionsActivity extends AppCompatActivity implements View.OnCli
                         Log.d(TAG, "onResponse: response = " + response.body());
 
                     }
-//                    Log.d(TAG, "onResponse: description = " + response.body().getDescription());
-//                    Log.d(TAG, "onResponse: disease = " + response.body().getDisease());
 
                 } catch (Exception e) {
                     Log.d(TAG, "onResponse: exception = " + e);

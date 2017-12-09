@@ -14,25 +14,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!--<TextView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:gravity="center"-->
-                <!--android:padding="15dp"-->
-                <!--android:text="Want to book an appointment ?"-->
-                <!--android:textSize="@dimen/profile_activity_header"-->
-                <!--android:textStyle="bold" />-->
-
-            <!--<View-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="1dp"-->
-                <!--android:layout_marginBottom="20dp"-->
-                <!--android:background="@color/black_dark" />-->
-
             <LinearLayout
-                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -43,8 +28,8 @@
                     android:layout_marginRight="30dp"
                     android:layout_weight="0.25"
                     android:text="Doctor :"
-                    android:textColor="@color/secondaryLightColor"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/secondaryLightColor"
                     android:textSize="@dimen/profile_activity_text"
                     android:textStyle="bold" />
 
@@ -83,8 +68,8 @@
                     android:layout_marginRight="30dp"
                     android:layout_weight="0.25"
                     android:text="Doctor ID :"
-                    android:textSize="@dimen/profile_activity_text"
                     android:textColor="@color/secondaryLightColor"
+                    android:textSize="@dimen/profile_activity_text"
                     android:textStyle="bold" />
 
                 <EditText
@@ -122,9 +107,8 @@
                     android:layout_marginRight="30dp"
                     android:layout_weight="0.25"
                     android:text="Location :"
-                    android:textSize="@dimen/profile_activity_text"
                     android:textColor="@color/secondaryLightColor"
-
+                    android:textSize="@dimen/profile_activity_text"
                     android:textStyle="bold" />
 
                 <EditText
@@ -164,15 +148,8 @@
                     android:layout_weight="0.25"
                     android:text="Date :"
                     android:textColor="@color/secondaryLightColor"
-
                     android:textSize="@dimen/profile_activity_text"
                     android:textStyle="bold" />
-
-                <!--<Button-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="Pick Date"-->
-                <!--android:onClick="showDatePickerDialog" />-->
 
                 <TextView
                     android:id="@+id/appointment_activity_date_button"
@@ -187,37 +164,6 @@
                     android:onClick="showDatePickerDialog"
                     android:text="Pick Date"
                     android:textSize="@dimen/profile_activity_text" />
-
-                <!--<EditText-->
-                <!--android:id="@+id/appointment_activity_date"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginBottom="20dp"-->
-                <!--android:layout_marginRight="20dp"-->
-                <!--android:layout_weight="0.75"-->
-                <!--android:background="@android:color/white"-->
-                <!--android:fitsSystemWindows="true"-->
-                <!--android:inputType="date"-->
-                <!--android:padding="10dp"-->
-                <!--android:hint="2017-10-25"-->
-                <!--android:alpha="0.8"-->
-                <!--android:textSize="@dimen/profile_activity_text" />-->
-
-                <!--<EditText-->
-                <!--android:id="@+id/appointment_activity_date"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginBottom="20dp"-->
-                <!--android:layout_marginRight="20dp"-->
-                <!--android:layout_weight="0.75"-->
-                <!--android:background="@android:color/white"-->
-                <!--android:fitsSystemWindows="true"-->
-                <!--android:inputType="date"-->
-                <!--android:padding="10dp"-->
-                <!--android:hint="2017-10-25"-->
-                <!--android:alpha="0.8"-->
-
-                <!--android:textSize="@dimen/profile_activity_text" />-->
 
             </LinearLayout>
 
@@ -261,36 +207,6 @@
                     android:textSize="@dimen/profile_activity_text"
                     android:timePickerMode="spinner" />
 
-                <!--<EditText-->
-                <!--android:id="@+id/appointment_activity_strt_time"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginBottom="20dp"-->
-                <!--android:layout_marginRight="20dp"-->
-                <!--android:layout_weight="0.75"-->
-                <!--android:alpha="0.8"-->
-                <!--android:background="@android:color/white"-->
-                <!--android:fitsSystemWindows="true"-->
-                <!--android:inputType="time"-->
-                <!--android:padding="10dp"-->
-                <!--android:hint="10:00"-->
-                <!--android:textSize="@dimen/profile_activity_text" />-->
-
-                <!--<TextView-->
-                <!--android:id="@+id/appointment_activity_start_time"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginBottom="20dp"-->
-                <!--android:layout_marginRight="20dp"-->
-                <!--android:layout_weight="0.75"-->
-                <!--android:background="@android:color/white"-->
-                <!--android:fitsSystemWindows="true"-->
-                <!--android:padding="10dp"-->
-                <!--android:alpha="0.8"-->
-                <!--android:gravity="center"-->
-                <!--android:text="Pick Time"-->
-                <!--android:onClick="showTimePickerDialog"-->
-                <!--android:textSize="@dimen/profile_activity_text" />-->
             </LinearLayout>
 
             <View
@@ -313,26 +229,9 @@
                     android:layout_weight="0.25"
                     android:onClick="showTimePickerDialog"
                     android:text="End Time :"
-                    android:textSize="@dimen/profile_activity_text"
                     android:textColor="@color/secondaryLightColor"
-
+                    android:textSize="@dimen/profile_activity_text"
                     android:textStyle="bold" />
-
-                <!--<TextView-->
-                <!--android:id="@+id/appointment_activity_end_time"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginBottom="20dp"-->
-                <!--android:layout_marginRight="20dp"-->
-                <!--android:layout_weight="0.75"-->
-                <!--android:background="@android:color/white"-->
-                <!--android:fitsSystemWindows="true"-->
-                <!--android:padding="10dp"-->
-                <!--android:alpha="0.8"-->
-                <!--android:gravity="center"-->
-                <!--android:text="Pick Time"-->
-                <!--android:onClick="showTimePickerDialog"-->
-                <!--android:textSize="@dimen/profile_activity_text" />-->
 
                 <TimePicker
                     android:id="@+id/appointment_activity_end_time_picker"
@@ -350,32 +249,6 @@
                     android:textSize="@dimen/profile_activity_text"
                     android:timePickerMode="spinner" />
 
-                <!--<TextView-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginBottom="20dp"-->
-                <!--android:layout_marginLeft="20dp"-->
-                <!--android:layout_marginRight="30dp"-->
-                <!--android:layout_weight="0.25"-->
-                <!--android:text="End Time :"-->
-                <!--android:textSize="@dimen/profile_activity_text"-->
-                <!--android:textStyle="normal" />-->
-
-                <!--<EditText-->
-                <!--android:id="@+id/appointment_activity_end_time"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginBottom="20dp"-->
-                <!--android:layout_marginRight="20dp"-->
-                <!--android:layout_weight="0.75"-->
-                <!--android:alpha="0.8"-->
-
-                <!--android:background="@android:color/white"-->
-                <!--android:fitsSystemWindows="true"-->
-                <!--android:inputType="time"-->
-                <!--android:padding="10dp"-->
-                <!--android:hint="11:00"-->
-                <!--android:textSize="@dimen/profile_activity_text" />-->
             </LinearLayout>
 
             <View
@@ -398,8 +271,8 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="30dp"
                     android:text="Please enter reason of appointment :"
-                    android:textSize="@dimen/profile_activity_text"
                     android:textColor="@color/secondaryLightColor"
+                    android:textSize="@dimen/profile_activity_text"
                     android:textStyle="bold" />
 
                 <EditText
@@ -434,8 +307,8 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/custom_login_button"
                 android:elevation="50dp"
-                android:textColor="@color/white"
-                android:text="Submit" />
+                android:text="Submit"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 

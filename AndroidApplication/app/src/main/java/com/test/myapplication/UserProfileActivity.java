@@ -50,7 +50,6 @@ public class UserProfileActivity extends AppCompatActivity {
     private TextView textViewEmail;
     private TextView textViewNumber;
     private TextView textViewDoctor;
-
     private TextView textViewAlcohol;
     private TextView textViewBleeding;
     private TextView textViewCancer;
@@ -59,26 +58,6 @@ public class UserProfileActivity extends AppCompatActivity {
     private TextView textViewBp;
     private TextView textViewHeartDisease;
     private TextView textViewMigraine;
-
-//    private RadioGroup radioGroupAlcohol;
-//    private RadioGroup radioGroupBleeding;
-//    private RadioGroup radioGroupCancer;
-//    private RadioGroup radioGroupDiabetes;
-//    private RadioGroup radioGroupEpilepsy;
-//    private RadioGroup radioGroupBp;
-//    private RadioGroup radioGroupHeart;
-//    private RadioGroup radioGroupMigraine;
-//    private RadioGroup radioGroupGender;
-
-//    private RadioButton radioButtonAlcohol;
-//    private RadioButton radioButtonBleeding;
-//    private RadioButton radioButtonCancer;
-//    private RadioButton radioButtonDiabetes;
-//    private RadioButton radioButtonEpilepsy;
-//    private RadioButton radioButtonBp;
-//    private RadioButton radioButtonHeart;
-//    private RadioButton radioButtonMigraine;
-//    private RadioButton radioButtonIsFemale;
 
     private String photoUrl;
 
@@ -97,7 +76,6 @@ public class UserProfileActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         photoUrl = intent.getStringExtra("user_photo");
-//        currentUserEmail = intent.getStringExtra("user_profile_email");
 
         initializeViews();
 
@@ -132,7 +110,6 @@ public class UserProfileActivity extends AppCompatActivity {
 
         textViewName = (TextView) findViewById(R.id.user_profile_activity_name);
         textViewGender = (TextView) findViewById(R.id.user_profile_activity_gender);
-//        radioGroupGender = (RadioGroup) findViewById(R.id.profile_activity_radio_group_gender);
         textViewLocation = (TextView) findViewById(R.id.user_profile_activity_location);
         textViewDob = (TextView) findViewById(R.id.user_profile_activity_dob);
         textViewEthnicity = (TextView) findViewById(R.id.user_profile_activity_ethnicity);
@@ -151,15 +128,6 @@ public class UserProfileActivity extends AppCompatActivity {
         textViewBp = (TextView) findViewById(R.id.user_profile_activity_text_view_bp);
         textViewHeartDisease = (TextView) findViewById(R.id.user_profile_activity_text_view_heart_disease);
         textViewMigraine = (TextView) findViewById(R.id.user_profile_activity_text_view_migraine);
-
-//        radioGroupAlcohol = (RadioGroup) findViewById(R.id.profile_activity_radio_group_alcohol);
-//        radioGroupBleeding = (RadioGroup) findViewById(R.id.profile_activity_radio_group_bleeding);
-//        radioGroupCancer = (RadioGroup) findViewById(R.id.profile_activity_radio_group_cancer);
-//        radioGroupDiabetes = (RadioGroup) findViewById(R.id.profile_activity_radio_group_diabetes);
-//        radioGroupEpilepsy = (RadioGroup) findViewById(R.id.profile_activity_radio_group_epilepsy);
-//        radioGroupBp = (RadioGroup) findViewById(R.id.profile_activity_radio_group_bp);
-//        radioGroupHeart = (RadioGroup) findViewById(R.id.profile_activity_radio_group_heart);
-//        radioGroupMigraine = (RadioGroup) findViewById(R.id.profile_activity_radio_group_migraine);
 
     }
 

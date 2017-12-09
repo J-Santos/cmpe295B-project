@@ -96,7 +96,6 @@ public class HomeActivity extends AppCompatActivity
 
         if (currentUserSharedPrefsEmail != null) {
             Log.d(TAG, "onCreate: shared prefs = null");
-//            String name = prefs.getString(getString(R.string.shared_pref_gmail), "No email available");
         }
 
         setUpToolbarAndNavigationDrawer();
@@ -186,20 +185,14 @@ public class HomeActivity extends AppCompatActivity
             if (checkSelfPermission(
                     Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
                 if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_CALENDAR)) {
-                    // Show an expanation to the user *asynchronously* -- don't block
-                    // this thread waiting for the user's response! After the user
-                    // sees the explanation, try again to request the permission.
+                    // Show an explanation to the user *asynchronously*
                 } else {
                     // No explanation needed, we can request the permission.
                     String[] permissions = new String[]{Manifest.permission.WRITE_CALENDAR};
                     requestPermissions(permissions, PERMISSION_REQUEST_CODE_CALENDAR);
 
-                    // PERMISSION_REQUEST_CODE is an
-                    // app-defined int constant. The callback method gets the
-                    // result of the request.
                 }
-            } else if (checkSelfPermission(
-                    Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
+            } else if (checkSelfPermission(Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
                 // Permission is granted
                 Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
                 builder.appendPath("time");
@@ -210,7 +203,6 @@ public class HomeActivity extends AppCompatActivity
             }
 
         } else if (id == R.id.logout_drawer) {
-
             Intent i = new Intent();
             setResult(RESULT_OK, i);
             finish();
@@ -319,11 +311,7 @@ public class HomeActivity extends AppCompatActivity
                 Log.d(TAG, "onClick: fab");
                 Intent intent = new Intent(this, PredictionsActivity.class);
                 startActivity(intent);
-
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
                 break;
-
         }
 
     }
@@ -332,8 +320,6 @@ public class HomeActivity extends AppCompatActivity
     private boolean permissionExists() {
         int currentApiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentApiVersion < Build.VERSION_CODES.M) {
-
-            // Permissions are already granted during INSTALL TIME for older OS version
             return true;
         }
 
@@ -366,7 +352,7 @@ public class HomeActivity extends AppCompatActivity
                     // contacts permission was granted! Let's populate the listview.
                     showCalendar();
                 } else {
-                    // contactss permission was denied, lets warn the user that we need this permission!
+                    // contacts permission was denied, lets warn the user that we need this permission!
                     Toast.makeText(getApplicationContext(), "You need to grant calendar permission", Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -422,48 +408,8 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void onItemClick(int position) {
-//        Toast.makeText(HomeActivity.this, "Clicked on " +
-//                dataListAppointment.get(position) + " at position " + position, Toast.LENGTH_SHORT).show();
-
         Appointment appointment = dataListAppointment.get(position);
-
-        Log.d(TAG, "onItemClick: app details = "+appointment.toString());
-//
-//        if (!appointment.getStatus().equals("approved")) {
-//            showAppointmentDetailsDialog(
-//                    appointment.getPurpose(),
-//                    appointment.getDoctorName(),
-//                    appointment.getDoctorId(),
-//                    appointment.getDate(),
-//                    appointment.getStartTime(),
-//                    appointment.getLocation()
-//            );
-//        }
-
-
-
-//        final Dialog dialog = new Dialog(this);
-//        dialog.setContentView(R.layout.custom_dialog_list_view);
-//        dialog.setTitle("Title...");
-//
-//        // set the custom dialog components - text, image and button
-//        TextView text = (TextView) dialog.findViewById(R.id.text);
-//        text.setText("Android custom dialog example!");
-//        ImageView image = (ImageView) dialog.findViewById(R.id.image);
-//        image.setImageResource(R.drawable.ic_launcher);
-//
-//        Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-//        // if button is clicked, close the custom dialog
-//        dialogButton.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dialog.dismiss();
-//            }
-//        });
-
-//        dialog.show();
-
-
+        Log.d(TAG, "onItemClick: app details = " + appointment.toString());
     }
 
     private void showAppointmentDetailsDialog(String title, String name, String email, String date, String time, String location) {
@@ -484,55 +430,7 @@ public class HomeActivity extends AppCompatActivity
         textViewTime.setText(time);
         textViewLocation.setText(location);
 
-//        Button ok = (Button) dialog.findViewById(R.id.dialog_app_ok);
-//
-//        ok.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                dialog.dismiss();
-//            }
-//        });
-
         dialog.show();
-    }
-
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        private Context context;
-
-
-        public ViewPagerAdapter(FragmentManager manager, Context context) {
-            super(manager);
-            this.context = context;
-
-        }
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
     }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {

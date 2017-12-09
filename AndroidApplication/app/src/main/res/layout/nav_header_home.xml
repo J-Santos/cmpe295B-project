@@ -15,29 +15,27 @@
         android:id="@+id/nav_header_photo"
         android:layout_width="85dp"
         android:layout_height="85sp"
-        android:elevation="5dp"
         android:layout_gravity="center"
+        android:elevation="5dp"
         android:src="@android:drawable/sym_def_app_icon" />
 
     <TextView
+        android:id="@+id/nav_header_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/nav_header_name"
+        android:gravity="center"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="Name not available"
-        android:gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
         android:id="@+id/nav_header_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="3dp"
         android:layout_marginBottom="10dp"
+        android:layout_marginTop="3dp"
+        android:gravity="center"
         android:text="Email not available"
-
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        />
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
 </LinearLayout>

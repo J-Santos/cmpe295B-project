@@ -2,43 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:alpha="0.9"
+    android:orientation="vertical"
     android:padding="2dp">
-
-    <!--<TextView-->
-    <!--android:id="@+id/dialog_title_purpose"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="Title"-->
-    <!--android:gravity="center"-->
-    <!--android:padding="30dp"-->
-    <!--android:textSize="30dp"-->
-    <!--android:layout_margin="0dp"-->
-    <!--android:elevation="15dp"-->
-    <!--android:alpha="0.9"-->
-    <!--android:textColor="@android:color/white"-->
-    <!--android:background="@android:color/holo_blue_dark"-->
-    <!--/>-->
-
-    <!--"_id": "59fb371baf5f790012018b39",-->
-    <!--"patient_id": "neharege28@gmail.com",-->
-    <!--"doctor_id": "jelsonsantos89@gmail.com",-->
-    <!--"doctor_name": "Doctor Test",-->
-    <!--"purpose": "Physical Exam",-->
-    <!--"status": "pending",-->
-    <!--"date": "2017-10-25T00:00:00.000Z",-->
-    <!--"start_time": "2017-10-25T10:00:00.000Z",-->
-    <!--"end_time": "2017-10-25T11:00:00.000Z",-->
-    <!--"location": "Hospital Way",-->
-    <!--"start_time_timestamp": 1508925600000,-->
-    <!--"__v": 0-->
-
-    <!--<View-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="2dp"-->
-    <!--android:background="@android:color/darker_gray"-->
-    <!--android:backgroundTint="@android:color/black" />-->
 
     <View
         android:layout_width="match_parent"
@@ -89,15 +55,7 @@
             android:layout_marginBottom="10dp"
             android:layout_weight="0.75"
             android:text="Doctor Name"
-
             android:textSize="15dp" />
-
-        <!--<ImageView-->
-        <!--android:id="@+id/user_profile_activity_name_edit"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:src="@drawable/ic_mode_edit_black_24dp"-->
-        <!--/>-->
 
     </LinearLayout>
 
@@ -188,7 +146,6 @@
             android:layout_weight="0.20"
             android:text="Time :"
             android:textSize="15dp"
-
             android:textStyle="normal" />
 
         <TextView
@@ -236,10 +193,10 @@
     </LinearLayout>
 
     <View
-    android:layout_width="match_parent"
-    android:layout_height="1.5dp"
-    android:background="@android:color/darker_gray"
-    android:backgroundTint="@android:color/holo_blue_light" />
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:background="@android:color/darker_gray"
+        android:backgroundTint="@android:color/holo_blue_light" />
 
     <Button
         android:id="@+id/dialog_app_ok"
@@ -250,6 +207,7 @@
         android:padding="10dp"
         android:text="OK"
         android:textColor="@color/black" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1.5dp"

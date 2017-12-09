@@ -14,16 +14,11 @@
     <color name="colorAccent">#0097a7</color>
     <color name="colorAccentG">#26a69a</color>
 
-    <!--<color name="colorAccentGh">#5df2d6</color>-->
     <color name="colorAccentGh">#5c6bc0</color>
-
-
-
 
     <color name="colorPrimaryMaterial">#7986cb</color>
     <color name="colorPrimaryDarkMaterial">#49599a</color>
     <color name="colorAccentMaterial">#f48fb1</color>
-
 
     <color name="colorRed">#c62828</color>
     <color name="colorGreen">#26a69a</color>
@@ -36,7 +31,6 @@
     <color name="grey_300">#E0E0E0</color>
     <color name="blue2">#5c6bc0</color>
 
-
     <color name="blue_dark">#151b5c</color>
     <color name="black">#212121</color>
     <color name="black_light">#26263e</color>
@@ -48,28 +42,6 @@
 
     <color name="material_indigo_transparent">#809fa8da</color>
 
-    <!--<color name="colorPrimaryMaterialBlack">#7986cb</color>-->
-    <!--<color name="colorPrimaryDarkMaterialBlack">#49599a</color>-->
-    <!--<color name="colorAccentMaterialRed">#f48fb1</color>-->
-
-    <!--<color name="primaryColor">#263238</color>-->
-    <!--<color name="primaryLightColor">#4f5b62</color>-->
-    <!--<color name="primaryDarkColor">#000a12</color>-->
-    <!--<color name="secondaryColor">#ef5350</color>-->
-    <!--<color name="secondaryLightColor">#ff867c</color>-->
-    <!--<color name="secondaryDarkColor">#b61827</color>-->
-    <!--<color name="primaryTextColor">#ffffff</color>-->
-    <!--<color name="secondaryTextColor">#000000</color>-->
-
-    <!--<color name="primaryColor">#004d40</color>-->
-    <!--<color name="primaryLightColor">#39796b</color>-->
-    <!--<color name="primaryDarkColor">#00251a</color>-->
-    <!--<color name="secondaryColor">#b71c1c</color>-->
-    <!--<color name="secondaryLightColor">#f05545</color>-->
-    <!--<color name="secondaryDarkColor">#7f0000</color>-->
-    <!--<color name="primaryTextColor">#ffffff</color>-->
-    <!--<color name="secondaryTextColor">#ffffff</color>-->
-
     <color name="primaryColor">#212121</color>
     <color name="primaryLightColor">#484848</color>
     <color name="primaryDarkColor">#000000</color>
@@ -78,14 +50,5 @@
     <color name="secondaryDarkColor">#c67100</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#000000</color>
-
-
-
-
-
-
-
-
-
 
 </resources>

@@ -20,21 +20,42 @@ import retrofit2.http.Query;
  */
 public interface ApiService {
 
+    /**
+     * https://remote-health-api.herokuapp.com/api/users/neharege28@gmail.com
+     *
+     * @param emailId
+     * @return
+     */
+
     @GET("/api/users/{emailId}")
     Call<User> getUser(@Path("emailId") String emailId);
+
+    /**
+     * https://remote-health-api.herokuapp.com/api/appointments/patient/neharege28@gmail.com
+     *
+     * @param emailId
+     * @return
+     */
 
     @GET("/api/appointments/patient/{emailId}")
     Call<ArrayList<Appointment>> getAppointments(@Path("emailId") String emailId);
 
-    /*
-    https://remote-health-api.herokuapp.com/api/appointments/patient/neharege28@gmail.com
+    /**
+     * https://remote-health-api.herokuapp.com/api/appointments
+     *
+     * @param newAppointment
+     * @return
      */
 
     @POST("/api/appointments")
     Call<BookAppointment> createNewAppointment(@Body BookAppointment newAppointment);
 
-    /*
-    https://remote-health-api.herokuapp.com/api/prediction?symptoms=weight%20loss,tired&email=jesantos0527@gmail.com
+    /**
+     * https://remote-health-api.herokuapp.com/api/prediction?symptoms=weight%20loss,tired&email=jesantos0527@gmail.com
+     *
+     * @param symptoms
+     * @param email
+     * @return
      */
 
     @GET("/api/prediction")
@@ -43,10 +64,13 @@ public interface ApiService {
             @Query("email") String email
     );
 
-    /*
-    https://remote-health-api.herokuapp.com/api/users/{USER_EMAIL}/{PASSWORD}/login
-
-    https://remote-health-api.herokuapp.com/api/users/jesantos0527-test@gmail.com/Testing1/login
+    /**
+     * https://remote-health-api.herokuapp.com/api/users/{USER_EMAIL}/{PASSWORD}/login
+     * https://remote-health-api.herokuapp.com/api/users/jesantos0527-test@gmail.com/Testing1/login
+     *
+     * @param USER_EMAIL
+     * @param PASSWORD
+     * @return
      */
 
     @GET("/api/users/{USER_EMAIL}/{PASSWORD}/login")
@@ -54,13 +78,5 @@ public interface ApiService {
             @Path("USER_EMAIL") String USER_EMAIL,
             @Path("PASSWORD") String PASSWORD
     );
-
-//    @GET("/v3/events/search/?expand=venue,category,ticket_classes")
-//    Call<FreeEventsObject> getAllNearbyEvents(
-//            @Query("location.within") String within,
-//            @Query("location.latitude") String lat,
-//            @Query("location.longitude") String longi,
-//            @Header("Authorization") String token
-//    );
 
 }

@@ -28,14 +28,12 @@ public class TimePickerFragment extends DialogFragment {
         return timePickerFragment;
 
     }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         Log.d(TAG, "onCreateDialog: ");
-
-        // Get a Calendar instance
         final Calendar calendar = Calendar.getInstance();
-        // Get the current hour and minute
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
