@@ -893,12 +893,14 @@ routerApp.controller('registerUserController',function($state,$scope,$http,$uibM
   	$scope.savePassword=function(){
   		var password = document.getElementById("password").value;
   		var confirm_password = document.getElementById("confirm_password").value;
+      console.log(password+" "+confirm_password+" "+(password != confirm_password));
   		// console.log(password);
   		if (password != confirm_password){
   			console.log("Passwords Don't Match");
 
          //modal pop ups
          $scope.statusMessage="Password Dont Match!!"
+
             $uibModal.open({
               scope: $scope,
               templateUrl: 'templates/modal.html',
@@ -916,8 +918,9 @@ routerApp.controller('registerUserController',function($state,$scope,$http,$uibM
   			registrationInfo[0]=email;
   			registrationInfo[1]=password;
   			console.log(registrationInfo[0]);
+          $state.go('personal_info');
   		}
-  		$state.go('personal_info');
+  	
   	}
 }) 
 
@@ -1030,8 +1033,24 @@ routerApp.controller('personalInfoController',function($state,$scope,$http,$root
                 }
               }
             })
-             destroyCookie();
-             $window.location.href = "/";
+
+             destroyCookie();              
+             var cookieValue={
+              'user':userName,
+              'tokens':null,
+              'user_type':registrationInfo[11]
+            }
+
+           cookieValue=JSON.stringify(cookieValue);
+             
+           var cookieName="rhaSJSU";
+           var date = new Date();
+             date.setTime(date.getTime() + (1 * 1 * 60 * 60 * 1000));
+             expires = "; expires=" + date.toGMTString();
+             document.cookie = encodeURIComponent(cookieName) + "=" + encodeURIComponent(cookieValue) + expires + "; path=/";
+
+             console.log("calling /Dashboard")
+             $window.location.href = "/Dashboard";
 
          },function(error){
             
@@ -1046,9 +1065,11 @@ routerApp.controller('personalInfoController',function($state,$scope,$http,$root
                 }
               }
             })
+
+            destroyCookie();
+            $window.location.href = "/";
          });
-         destroyCookie();
-        $window.location.href = "/Dashboard";
+
     }
     else if(user_type=="patient"){
          $state.go('personal_history');
@@ -1592,8 +1613,27 @@ routerApp.controller('familyHistoryController',function($scope,$http,$uibModal){
                 }
               }
             })
-            destroyCookie();
-             $window.location.href = "/";
+
+
+             destroyCookie();              
+             var cookieValue={
+              'user':userName,
+              'tokens':null,
+              'user_type':registrationInfo[11]
+            }
+
+           cookieValue=JSON.stringify(cookieValue);
+             
+           var cookieName="rhaSJSU";
+           var date = new Date();
+             date.setTime(date.getTime() + (1 * 1 * 60 * 60 * 1000));
+             expires = "; expires=" + date.toGMTString();
+             document.cookie = encodeURIComponent(cookieName) + "=" + encodeURIComponent(cookieValue) + expires + "; path=/";
+
+             console.log("calling /Dashboard")
+             $window.location.href = "/Dashboard";
+
+             
          },function(error){
             console.log("err");
             console.log(error);
@@ -1608,9 +1648,11 @@ routerApp.controller('familyHistoryController',function($scope,$http,$uibModal){
                 }
               }
             })
+
             destroyCookie();
             $window.location.href = "/";
          });
+         
 	}
 })
 

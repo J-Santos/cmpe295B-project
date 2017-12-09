@@ -7,7 +7,7 @@ var router              =   express.Router();
 var app                 =   express();
 var path                =   require("path");
 var http				=	require('http');
-var authenticate		= 	require('./authentication.js');
+//var authenticate		= 	require('./authentication.js');
 var url 				= 	require('url');  
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended" : true}));
